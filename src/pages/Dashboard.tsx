@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { currentMonth } from '../../shared/months';
 import type { FundSummary, Period, Portfolio } from '../../shared/types';
+import { nextMonthToFill } from '../../shared/yields';
 import { api } from '../api';
 import { useMe } from '../auth';
 import { BalanceChart, Donut, fundStyles, ReturnsChart, seriesIn, type Slice } from '../components/charts';
@@ -92,8 +94,11 @@ export function Dashboard() {
           <Link className="btn large" to="/import">
             <Icon name="upload" /> {t('funds.import')}
           </Link>
-          <Link className="btn primary large" to="/funds/new">
+          <Link className="btn large" to="/funds/new">
             <Icon name="plus" /> {t('funds.add')}
+          </Link>
+          <Link className="btn primary large" to="/add-month">
+            <Icon name="plus" /> {t('dash.addMonth', { month: fmt.month(nextMonthToFill(openFunds, currentMonth())) })}
           </Link>
         </div>
       </div>

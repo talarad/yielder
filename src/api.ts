@@ -142,6 +142,29 @@ export const api = {
 
     return detail(id);
   },
+  /** Every fund with its months, for filling in one month across all funds. */
+  monthSheet: async (): Promise<Array<{ fund: FundSummary; entries: Entry[] }>> =>
+    workspace()
+      .repo.fundsWithEntries()
+      .map(({ fund, entries }) => ({ fund: summarizeFund(fund, entries, currentMonth()), entries })),
+  /** Saves one month for several funds at once. An existing month keeps its comment. */
+  saveMonth: async (month: string, rows: Array<{ fundId: number; balance: number; deposit: number; withdrawal: number }>): Promise<void> => {
+    const m = parse(monthSchema, month);
+    const bodies = rows.map(({ fundId, ...body }) => ({ fundId, ...parse(entryBodySchema.omit({ comment: true }), body) }));
+
+    workspace().change(repo => {
+      for (const { fundId, ...body } of bodies) {
+        if (!repo.getFund(fundId)) {
+          throw notFound();
+        }
+
+        const comment = repo.entriesOf(fundId).find(e => e.month === m)?.comment ?? '';
+
+        repo.upsertEntry(fundId, { month: m, ...body, comment });
+        repo.touchFund(fundId);
+      }
+    });
+  },
 
   portfolio: async (): Promise<Portfolio> => buildPortfolio(workspace().repo.fundsWithEntries(), currentMonth()),
   compare: async (period: Period): Promise<CompareResult> =>

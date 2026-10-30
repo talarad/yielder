@@ -4,6 +4,7 @@ import { useMe } from './auth';
 import { Layout } from './components/Layout';
 import { ErrorBox, Loading } from './components/ui';
 import { useI18n } from './i18n';
+import { AddMonth } from './pages/AddMonth';
 import { Compare } from './pages/Compare';
 import { Dashboard } from './pages/Dashboard';
 import { FundEdit } from './pages/FundEdit';
@@ -47,6 +48,7 @@ export function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Dashboard />} />
+        <Route path="add-month" element={<AddMonth />} />
         <Route path="funds" element={<Funds />} />
         <Route path="funds/new" element={<FundEdit />} />
         <Route path="funds/:id" element={<FundPage />} />

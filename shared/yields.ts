@@ -510,6 +510,23 @@ export function portfolioAsOf(funds: Array<{ status: Fund['status']; entries: En
   return pool.length ? pool.reduce((a, b) => (a > b ? a : b)) : null;
 }
 
+/**
+ * The month to fill in next across funds: the newest month while some open fund is one month behind
+ * it (statements arrive on different days), otherwise the month after. A fund that's further behind
+ * doesn't hold everyone back.
+ */
+export function nextMonthToFill(funds: Array<{ status: Fund['status']; asOf: string | null }>, today: string): string {
+  const months = funds.filter(f => f.status !== 'closed' && f.asOf).map(f => f.asOf!);
+
+  if (months.length === 0) {
+    return addMonths(today, -1);
+  }
+
+  const newest = months.reduce((a, b) => (a > b ? a : b));
+
+  return months.includes(addMonths(newest, -1)) ? newest : addMonths(newest, 1);
+}
+
 export function buildPortfolio(funds: Array<{ fund: Fund; entries: Entry[] }>, today: string): Portfolio {
   const summaries = funds.map(f => summarizeFund(f.fund, f.entries, today));
   const tracked = funds.map(f => ({ status: f.fund.status, entries: f.entries }));

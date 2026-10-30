@@ -5,6 +5,9 @@ import { PERIODS, type FundType, type Period } from '../../shared/types';
 import { useI18n } from '../i18n';
 import type { MessageKey } from '../locales';
 
+/** A single month moving more than this is flagged as a likely typo or data-entry timing issue. */
+export const UNUSUAL_MONTH = 0.15;
+
 export function toneOf(v: number | null | undefined): string {
   if (v === null || v === undefined) {
     return 'na';
@@ -184,6 +187,7 @@ const ICONS = {
   upload: 'M12 16V4m0 0-4 4m4-4 4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2',
   download: 'M12 4v12m0 0-4-4m4 4 4-4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2',
   plus: 'M12 5v14M5 12h14',
+  check: 'M20 6 9 17l-5-5',
   logo: 'M4 17l5-6 4 3 7-8',
   overview: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',
   funds: 'M12 3 3 8l9 5 9-5-9-5ZM3 13l9 5 9-5M3 17.5l9 5 9-5',

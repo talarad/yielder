@@ -7,8 +7,9 @@ import { useTheme } from '../theme';
 import { SaveLine, SaveProblem } from './SaveStatus';
 import { Icon, initialOf, Logo } from './ui';
 
-const NAV: Array<{ to: string; label: MessageKey; icon: 'overview' | 'funds' | 'compare' | 'upload' }> = [
+const NAV: Array<{ to: string; label: MessageKey; icon: 'overview' | 'plus' | 'funds' | 'compare' | 'upload' }> = [
   { to: '/', label: 'nav.dashboard', icon: 'overview' },
+  { to: '/add-month', label: 'nav.addMonth', icon: 'plus' },
   { to: '/funds', label: 'nav.funds', icon: 'funds' },
   { to: '/compare', label: 'nav.compare', icon: 'compare' },
   { to: '/import', label: 'nav.import', icon: 'upload' },

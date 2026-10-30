@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import type { Entry, Fund } from './types';
 import { addMonths } from './months';
-import { buildPortfolio, chainReturns, computeYearly, computeYield, fundTrack, peerStats, summarizeFund } from './yields';
+import { buildPortfolio, chainReturns, computeYearly, computeYield, fundTrack, nextMonthToFill, peerStats, summarizeFund } from './yields';
 
 const close = (actual: number | null, expected: number, eps = 1e-9) => {
   assert.ok(actual !== null, 'expected a number, got null');
@@ -169,6 +169,26 @@ describe('portfolio', () => {
     );
 
     close(p.totalBalance, 1000);
+  });
+});
+
+describe('nextMonthToFill', () => {
+  const at = (asOf: string | null, status: Fund['status'] = 'active') => ({ asOf, status });
+
+  it('is the month after, once every fund has the newest month', () => {
+    assert.equal(nextMonthToFill([at('2026-08'), at('2026-08')], '2026-10'), '2026-09');
+  });
+
+  it('stays on the newest month while a fund is one month behind', () => {
+    assert.equal(nextMonthToFill([at('2026-09'), at('2026-08')], '2026-10'), '2026-09');
+  });
+
+  it('moves on past funds that are far behind or closed', () => {
+    assert.equal(nextMonthToFill([at('2026-09'), at('2024-03'), at('2026-08', 'closed')], '2026-10'), '2026-10');
+  });
+
+  it('is last month when there is nothing yet', () => {
+    assert.equal(nextMonthToFill([at(null)], '2026-10'), '2026-09');
   });
 });
 

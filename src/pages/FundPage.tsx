@@ -26,12 +26,11 @@ import {
   useTabParam,
   balanceChange,
   TwoLineHeader,
+  UNUSUAL_MONTH,
 } from '../components/ui';
 import { useI18n } from '../i18n';
 import type { MessageKey } from '../locales';
 
-/** A single month moving more than this is flagged as a likely data-entry timing issue. */
-const UNUSUAL_MONTH = 0.15;
 /** A calendar year this far off usually means deposits recorded that never reached the balance (or vice versa). */
 const UNUSUAL_YEAR = 0.3;
 
@@ -296,8 +295,18 @@ interface Draft {
   comment: string;
 }
 
+/** The month after the latest, with that month's deposit (usually the same every month). */
 function blankDraft(fund: FundDetail): Draft {
-  return { month: fund.asOf ? addMonths(fund.asOf, 1) : currentMonth(), balance: '', deposit: '', withdrawal: '', comment: '' };
+  // Entries come newest first.
+  const last = fund.entries[0];
+
+  return {
+    month: fund.asOf ? addMonths(fund.asOf, 1) : currentMonth(),
+    balance: '',
+    deposit: last?.deposit ? String(last.deposit) : '',
+    withdrawal: '',
+    comment: '',
+  };
 }
 
 function Statements({ fund, onChanged }: { fund: FundDetail; onChanged: (d: FundDetail) => void }) {
@@ -369,7 +378,7 @@ function Statements({ fund, onChanged }: { fund: FundDetail; onChanged: (d: Fund
             {t('fund.withdrawal')}
             <input type="number" inputMode="decimal" step="any" min="0" value={draft.withdrawal} onChange={set('withdrawal')} placeholder="0" dir="ltr" />
           </label>
-          <label className="field">
+          <label className="field wide">
             {t('fund.comment')}
             <input value={draft.comment} onChange={set('comment')} maxLength={300} dir="auto" />
           </label>
@@ -378,6 +387,9 @@ function Statements({ fund, onChanged }: { fund: FundDetail; onChanged: (d: Fund
           </button>
         </form>
         {exists && <p className="small muted" style={{ marginTop: 8 }}>{t('fund.monthExists')}</p>}
+        <p className="small" style={{ marginTop: 8 }}>
+          <Link to="/add-month">{t('fund.allFunds')}</Link>
+        </p>
         {(save.error || remove.error) && (
           <div style={{ marginTop: 8 }}>
             <ErrorText error={save.error ?? remove.error} />

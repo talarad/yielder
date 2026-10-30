@@ -56,6 +56,7 @@ for the step-by-step (about 10 minutes).
 
 - **Funds**: type (comprehensive/supplementary pension, managers' insurance, education fund, provident, investment provident, self-managed, savings, other), provider, investment track, status, notes.
 - **Monthly statements**: balance, deposit, withdrawal, comment per month. Months that look like data-entry problems are flagged.
+- **Add a month**: one screen for the new month across all funds: deposits copied from the month before, and each fund's return for the month shown as you type, so a typo stands out before it's saved.
 - **Returns** for 1 month, YTD, 1 / 3 / 5 years and since start, with the ₪ gain and the yearly rate for longer periods, always next to the plain balance change. Per-year table, monthly and yearly return charts.
 - **Dashboard**: total balance, a chart of balance or return (% since the start of the period) for every fund or the total, your funds, returns and allocation (donuts by product type and by fund) in tabs.
 - **Compare with the market**: each fund against the real funds of the same product type at 11 managing companies, over exactly the same months, plus a providers & tracks table.
