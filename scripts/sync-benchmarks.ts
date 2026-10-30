@@ -76,7 +76,9 @@ async function fetchRecent(ids: Map<FundType, string[]>, now: Date): Promise<Map
       }
 
       for (const row of records) {
-        const ret = row.MONTHLY_YIELD === null || row.MONTHLY_YIELD === undefined ? null : Number(row.MONTHLY_YIELD) / 100;
+        // Percent to a fraction, rounded: 6.14 / 100 is 0.061399999999999996 in floating point, which
+        // would look like a revision of the stored 0.0614 every month.
+        const ret = row.MONTHLY_YIELD === null || row.MONTHLY_YIELD === undefined ? null : Math.round(Number(row.MONTHLY_YIELD) * 1e6) / 1e8;
 
         // Anything beyond ±50% in a month is a unit or data error.
         if (ret === null || Math.abs(ret) > 0.5) {
