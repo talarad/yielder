@@ -1,4 +1,5 @@
-# Builds the site and publishes it on GitHub Pages, at https://<owner>.github.io/<repository>/.
+# Builds the site and publishes it on GitHub Pages, at https://<owner>.github.io/<repository>/
+# (or at https://<owner>.github.io/ when the repository is named <owner>.github.io).
 #
 # Runs on every push to main, and after the monthly market-data refresh (its commit is pushed by
 # the workflow itself, which doesn't trigger push workflows). The Google client ID comes from the
@@ -46,10 +47,16 @@ jobs:
 
       - run: npm test
 
+      # An <owner>.github.io repository is served at the root of that address; any other at /<repository>/.
       - name: Build
-        run: npm run build
+        run: |
+          case "$REPO" in
+            *.github.io) export BASE_PATH=/ ;;
+            *) export BASE_PATH="/$REPO/" ;;
+          esac
+          npm run build
         env:
-          BASE_PATH: /${{ github.event.repository.name }}/
+          REPO: ${{ github.event.repository.name }}
           VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
 
       # Pages has no rewrite rules: its 404 page is the app, so links like /funds/3 open directly.
