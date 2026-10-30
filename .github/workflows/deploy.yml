@@ -1,0 +1,63 @@
+# Builds the site and publishes it on GitHub Pages, at https://<owner>.github.io/<repository>/.
+#
+# Runs on every push to main, and after the monthly market-data refresh (its commit is pushed by
+# the workflow itself, which doesn't trigger push workflows). The Google client ID comes from the
+# repository variable VITE_GOOGLE_CLIENT_ID; without it the site works in "this browser only" mode.
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [Market data]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
+
+      # Pages has no rewrite rules: its 404 page is the app, so links like /funds/3 open directly.
+      - run: cp dist/index.html dist/404.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v5

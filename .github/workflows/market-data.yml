@@ -2,7 +2,7 @@
 #
 # The regulator publishes the previous month's returns by around the 20th. This runs on the 20th
 # and the following days (in case the data is late or the run fails), and commits the file only
-# when something changed. Cloudflare Pages redeploys the site on that commit.
+# when something changed. The Deploy workflow then publishes the site with it.
 
 name: Market data
 

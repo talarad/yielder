@@ -1,27 +1,27 @@
 # Setting up Yielder for free
 
-About 15 minutes. You need a Google account (you have one) and a free Cloudflare account. No
-credit card anywhere.
+About 10 minutes. You need your GitHub account (you have one) and your Google account. No new
+accounts and no credit card.
 
 At the end you have:
 
-- the app at an address like `https://yielder-abc.pages.dev`, on your phone and computer;
+- the app at `https://<your-github-name>.github.io/yielder-v2/`, on your phone and computer;
 - sign-in with Google, with your data in one file in your own Google Drive;
 - market data refreshed every month by GitHub, for free.
 
-## 1. Put the site on Cloudflare Pages
+## 1. Put the site on GitHub Pages
 
-1. Create a free account at <https://dash.cloudflare.com/sign-up>.
-2. In the dashboard: **Workers & Pages → Create → Pages → Connect to Git**. Allow Cloudflare to
-   see your GitHub account; you can limit it to the `yielder-v2` repository.
-3. Pick **yielder-v2** and fill in:
-   - Production branch: `main`
-   - Framework preset: `None`
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Environment variable: `NODE_VERSION` = `22`
-4. **Save and Deploy.** When it finishes, note the address it gives you (`https://….pages.dev`).
-   You need it in step 2.
+The repository already has a **Deploy** workflow that builds the site and publishes it on every
+push to `main`. It only needs GitHub Pages turned on:
+
+1. On GitHub, open the repository → **Settings → Pages**.
+2. Under **Build and deployment → Source**, pick **GitHub Actions**.
+3. Open **Actions → Deploy → Run workflow**. When it finishes, the site is at
+   `https://<your-github-name>.github.io/yielder-v2/`.
+
+On a free GitHub plan, Pages works only for **public** repositories (Settings → General → Danger
+Zone → Change visibility). That makes the code public, not your data: your data is never in the
+repository. With GitHub Pro the repository can stay private.
 
 The site already works now with **Use in this browser only**. "Continue with Google" says it's
 not set up yet; that's the next step.
@@ -39,14 +39,14 @@ not set up yet; that's the next step.
      review anything.
 4. **Clients → Create client → Web application**:
    - Name: `Yielder web`
-   - Authorized JavaScript origins: your Cloudflare address from step 1 (e.g.
-     `https://yielder-abc.pages.dev`), and `http://localhost:5173` if you also run it locally.
+   - Authorized JavaScript origins: `https://<your-github-name>.github.io` (the address without
+     `/yielder-v2/`), and `http://localhost:5173` if you also run it locally.
    - No redirect URIs are needed.
 5. Copy the **Client ID** (it ends with `.apps.googleusercontent.com`). It isn't a secret: it
    only identifies the app to Google.
-6. Back in Cloudflare: your Pages project → **Settings → Variables and secrets → Add**:
-   `VITE_GOOGLE_CLIENT_ID` = the Client ID. Then **Deployments → Retry deployment** (or push any
-   commit) so the build picks it up.
+6. Back on GitHub: the repository → **Settings → Secrets and variables → Actions → Variables →
+   New repository variable**: `VITE_GOOGLE_CLIENT_ID` = the Client ID. Then **Actions → Deploy →
+   Run workflow** so the site picks it up.
 
 To use Google sign-in locally too, create a file `.env.local` next to `package.json` with
 `VITE_GOOGLE_CLIENT_ID=…` and restart `npm run dev`.
@@ -66,9 +66,8 @@ To use Google sign-in locally too, create a file `.env.local` next to `package.j
 
 Nothing to do: the repository's GitHub Actions job **Market data** runs on the 20th–25th of
 every month, fetches the new month from data.gov.il and commits it when there's something new;
-Cloudflare redeploys the site on that commit. You can run it by hand from the repository's
-**Actions** tab → **Market data → Run workflow**. If GitHub ever asks, allow Actions for the
-repository.
+the **Deploy** job then publishes the site with it. You can run it by hand from the repository's
+**Actions** tab → **Market data → Run workflow**.
 
 ## Good to know
 
@@ -81,3 +80,6 @@ repository.
   versions**), and **Settings → Download a copy** saves the whole file to your computer.
 - **Leaving**: your data is a normal SQLite file. You can open it with any SQLite tool, or
   export everything to Excel from **Import → Export my data**.
+- **Other hosts**: any static host works. `public/_headers` and `public/_redirects` are the
+  security headers and page routing for Cloudflare Pages, if you ever prefer it (it can host a
+  private repository on its free plan).

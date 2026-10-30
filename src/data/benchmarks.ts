@@ -27,7 +27,7 @@ export function toBenchmarks(file: BenchmarkFile): BenchmarkWithReturns[] {
 let loading: Promise<BenchmarkWithReturns[]> | null = null;
 
 export function loadBenchmarks(): Promise<BenchmarkWithReturns[]> {
-  loading ??= fetch('/benchmarks.json')
+  loading ??= fetch(`${import.meta.env?.BASE_URL ?? '/'}benchmarks.json`)
     .then(res => {
       if (!res.ok) {
         throw new Error(`Market data: ${res.status}`);

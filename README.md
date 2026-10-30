@@ -48,8 +48,9 @@ converted on the fly.
 
 ## Deploy for free
 
-The site is static: Cloudflare Pages hosts it for free, and GitHub runs the monthly market-data
-refresh for free. See **[SETUP.md](SETUP.md)** for the step-by-step (about 15 minutes).
+The site is static: GitHub Pages hosts it for free (the **Deploy** workflow publishes every push
+to `main`), and GitHub runs the monthly market-data refresh for free. See **[SETUP.md](SETUP.md)**
+for the step-by-step (about 10 minutes).
 
 ## Features
 
@@ -78,7 +79,7 @@ The math lives in `shared/yields.ts` and is covered by `shared/yields.test.ts`.
 
 - Source: the Capital Market Authority's open data on data.gov.il (datasets `gemelnet` and `pensia-net`), field `MONTHLY_YIELD`: nominal monthly returns, gross of management fees.
 - 163 series from 11 managing companies: Altshuler Shaham, Clal, Harel, Meitav, Migdal, Menora Mivtachim, Phoenix, More, Infinity, Yelin Lapidot and Analyst (Psagot is left out: its funds were emptied in 2021). Pension, education fund, provident and investment provident funds, in the General / Equities / S&P 500 / age-50-and-under tracks, wherever the company offers them. Where a company's "General" provident fund is a legacy fund closed to new members, the series says so in `note`.
-- The data is a static file, `public/benchmarks.json`. **Monthly refresh**: a GitHub Actions job (`.github/workflows/market-data.yml`) runs on the 20th–25th of each month (the previous month is published by about the 20th), re-reads the last 6 months to pick up revisions, and commits the file when it changed; Cloudflare Pages then redeploys. It can also be run by hand from the repository's Actions tab.
+- The data is a static file, `public/benchmarks.json`. **Monthly refresh**: a GitHub Actions job (`.github/workflows/market-data.yml`) runs on the 20th–25th of each month (the previous month is published by about the 20th), re-reads the last 6 months to pick up revisions, and commits the file when it changed; the Deploy workflow then republishes the site. It can also be run by hand from the repository's Actions tab.
 - Comparisons step back up to two months when the market data doesn't have your latest month yet.
 
 ## Layout
@@ -91,5 +92,5 @@ src/
   storage/      drive.ts (Google sign-in + Drive), browser.ts (IndexedDB)
   pages/, components/, i18n + Hebrew/English strings in locales.ts
 scripts/        sync-benchmarks.ts (market data refresh)
-public/         benchmarks.json, _headers (security policy) and _redirects for Cloudflare Pages
+public/         benchmarks.json, _headers (security policy; the build also puts it in index.html) and _redirects for other hosts
 ```
