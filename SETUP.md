@@ -5,7 +5,7 @@ accounts and no credit card.
 
 At the end you have:
 
-- the app at `https://<your-github-name>.github.io/yielder-v2/`, on your phone and computer;
+- the app at `https://<your-github-name>.github.io/yielder/`, on your phone and computer;
 - sign-in with Google, with your data in one file in your own Google Drive;
 - market data refreshed every month by GitHub, for free.
 
@@ -17,7 +17,7 @@ push to `main`. It only needs GitHub Pages turned on:
 1. On GitHub, open the repository → **Settings → Pages**.
 2. Under **Build and deployment → Source**, pick **GitHub Actions**.
 3. Open **Actions → Deploy → Run workflow**. When it finishes, the site is at
-   `https://<your-github-name>.github.io/yielder-v2/`.
+   `https://<your-github-name>.github.io/yielder/`.
 
 On a free GitHub plan, Pages works only for **public** repositories (Settings → General → Danger
 Zone → Change visibility). That makes the code public, not your data: your data is never in the
@@ -40,7 +40,7 @@ not set up yet; that's the next step.
 4. **Clients → Create client → Web application**:
    - Name: `Yielder web`
    - Authorized JavaScript origins: `https://<your-github-name>.github.io` (the address without
-     `/yielder-v2/`), and `http://localhost:5173` if you also run it locally.
+     `/yielder/`), and `http://localhost:5173` if you also run it locally.
    - No redirect URIs are needed.
 5. Copy the **Client ID** (it ends with `.apps.googleusercontent.com`). It isn't a secret: it
    only identifies the app to Google.
