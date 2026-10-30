@@ -1,0 +1,2 @@
+# Cloudflare Pages: every app route (e.g. /funds/3) serves the app; it routes in the browser.
+/*  /index.html  200

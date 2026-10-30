@@ -1,4 +1,4 @@
-// Types shared by the API server and the React client.
+// Types shared by the data code and the React client.
 
 export const FUND_TYPES = [
   'pension_comprehensive',
@@ -20,12 +20,13 @@ export type FundStatus = (typeof FUND_STATUSES)[number];
 export const PERIODS = ['1M', 'YTD', '1Y', '3Y', '5Y', 'ALL'] as const;
 export type Period = (typeof PERIODS)[number];
 
+/** The person whose data file is open. */
 export interface User {
-  id: number;
-  username: string;
+  /** Google account email, or empty in this-browser mode. */
+  email: string;
+  /** The name shown in the app: set in Settings, else the Google name. */
   displayName: string;
-  shareAnonymously: boolean;
-  createdAt: string;
+  storage: 'drive' | 'browser';
 }
 
 export interface Fund {
@@ -211,17 +212,12 @@ export interface FundComparison {
   benchmarks: BenchmarkReturn[];
   /** Your return against those benchmarks. */
   market: PeerStats;
-  /** Your return against other users' funds of the same type (anonymous). */
-  people: PeerStats;
 }
 
 export interface CompareResult {
   period: Period;
-  /** Month the portfolio comparison ends at (and the market table, for types you don't hold). */
+  /** Your latest month (the market table ends there for types you don't hold). */
   asOf: string | null;
-  /** Whether other users share anonymously (how many is never exposed in the UI). */
-  hasPeople: boolean;
-  portfolio: PeerStats;
   funds: FundComparison[];
   /** Every benchmark over its product type's window in `marketWindows`. */
   market: BenchmarkReturn[];

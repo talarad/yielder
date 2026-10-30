@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import ExcelJS from 'exceljs';
 
-import type { Fund } from '../../shared/types';
+import type { Fund } from './types';
 import { buildExport, buildTemplate, cellMonth, parseWorkbook } from './excel';
 import { fundDetail } from './yields';
 

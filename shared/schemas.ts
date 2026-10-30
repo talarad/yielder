@@ -1,16 +1,7 @@
 import { z } from 'zod';
 
-import { FUND_STATUSES, FUND_TYPES, PERIODS } from '../shared/types';
-import { isMonth } from '../shared/months';
-
-export const usernameSchema = z
-  .string()
-  .trim()
-  .min(3, 'Username must be at least 3 characters')
-  .max(32, 'Username must be at most 32 characters')
-  .regex(/^[a-zA-Z0-9_.-]+$/, 'Use only letters, numbers, dot, dash or underscore');
-
-export const passwordSchema = z.string().min(8, 'Password must be at least 8 characters').max(200);
+import { FUND_STATUSES, FUND_TYPES, PERIODS } from './types';
+import { isMonth } from './months';
 
 const fundFields = {
   name: z.string().trim().min(1, 'Name is required').max(80),

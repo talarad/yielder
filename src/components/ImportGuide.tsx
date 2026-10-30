@@ -125,9 +125,9 @@ export function ImportGuide({ onUpload }: { onUpload: () => void }) {
           <li>{t('guide.rule.notSupported')}</li>
         </ul>
         <div className="row" style={{ marginTop: 18 }}>
-          <a className="btn" href={api.templateUrl} download>
+          <button className="btn" onClick={() => void api.downloadTemplate()}>
             <Icon name="download" /> {t('import.template')}
-          </a>
+          </button>
           <button className="btn primary" onClick={onUpload}>
             <Icon name="upload" /> {t('guide.startUpload')}
           </button>

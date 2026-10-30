@@ -1,56 +1,54 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { api } from '../api';
-import { forgetUser, ME_KEY, useMe } from '../auth';
-import { Card, ErrorText } from '../components/ui';
+import { ME_KEY, useMe, useSignOut } from '../auth';
+import { Card, ErrorText, Icon } from '../components/ui';
+import { workspace } from '../data/workspace';
 import { useI18n, type Lang } from '../i18n';
 
 export function Settings() {
   const { t, lang, setLang } = useI18n();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const { data: me } = useMe();
+  const signOut = useSignOut();
   const [displayName, setDisplayName] = useState(me?.displayName ?? '');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [deletePassword, setDeletePassword] = useState('');
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const updateMe = useMutation({
     mutationFn: api.updateMe,
-    onSuccess: user => {
-      qc.setQueryData(ME_KEY, user);
-      qc.invalidateQueries({ queryKey: ['compare'] });
-    },
+    onSuccess: user => qc.setQueryData(ME_KEY, user),
   });
-  const changePassword = useMutation({
-    mutationFn: () => api.changePassword(currentPassword, newPassword),
-    onSuccess: () => {
-      setCurrentPassword('');
-      setNewPassword('');
+  const download = useMutation({ mutationFn: api.downloadData });
+  const open = useMutation({
+    mutationFn: api.openDataFile,
+    onSuccess: async () => {
+      await qc.invalidateQueries();
     },
-  });
-  const deleteAccount = useMutation({
-    mutationFn: () => api.deleteAccount(deletePassword),
-    onSuccess: () => forgetUser(qc),
   });
 
   if (!me) {
     return null;
   }
 
+  const { backend } = workspace();
+  const fileUrl = backend.fileUrl();
+
   const onProfile = (e: FormEvent) => {
     e.preventDefault();
     updateMe.mutate({ displayName });
   };
 
-  const onPassword = (e: FormEvent) => {
-    e.preventDefault();
-    changePassword.mutate();
-  };
+  const onPick = (file: File | undefined) => {
+    if (file && window.confirm(t('settings.replaceConfirm', { file: file.name }))) {
+      open.mutate(file);
+    }
 
-  const onDelete = (e: FormEvent) => {
-    e.preventDefault();
-    deleteAccount.mutate();
+    if (fileInput.current) {
+      fileInput.current.value = '';
+    }
   };
 
   return (
@@ -58,7 +56,7 @@ export function Settings() {
       <div className="page-head">
         <div>
           <h1>{t('settings.title')}</h1>
-          <div className="sub">{t('settings.signedInAs', { username: me.username })}</div>
+          {me.email && <div className="sub">{t('settings.signedInAs', { email: me.email })}</div>}
         </div>
       </div>
 
@@ -67,7 +65,7 @@ export function Settings() {
           <div className="form-grid">
             <label className="field">
               {t('settings.displayName')}
-              <input value={displayName} onChange={e => setDisplayName(e.target.value)} maxLength={60} required dir="auto" />
+              <input value={displayName} onChange={e => setDisplayName(e.target.value)} maxLength={60} dir="auto" />
             </label>
             <label className="field">
               {t('settings.language')}
@@ -87,61 +85,45 @@ export function Settings() {
         </form>
       </Card>
 
-      <Card title={t('settings.privacy')}>
-        <label className="check">
-          <input type="checkbox" checked={me.shareAnonymously} onChange={e => updateMe.mutate({ shareAnonymously: e.target.checked })} />
-          <span>
-            {t('auth.share')}
-            <br />
-            <span className="muted small">{t('auth.shareHint')}</span>
-          </span>
-        </label>
-      </Card>
+      <Card title={t('settings.data')}>
+        <div className="stack">
+          <p>
+            {backend.kind === 'drive' ? t('settings.whereDrive', { file: backend.fileName }) : t('settings.whereBrowser')}{' '}
+            {fileUrl && (
+              <a href={fileUrl} target="_blank" rel="noreferrer">
+                {t('settings.openInDrive')}
+              </a>
+            )}
+          </p>
 
-      <Card title={t('settings.password')}>
-        <form className="stack" onSubmit={onPassword}>
-          <div className="form-grid">
-            <label className="field">
-              {t('settings.currentPassword')}
-              <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} autoComplete="current-password" required dir="ltr" />
-            </label>
-            <label className="field">
-              {t('settings.newPassword')}
-              <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} autoComplete="new-password" minLength={8} required dir="ltr" />
-              <span className="hint">{t('auth.passwordHint')}</span>
-            </label>
-          </div>
-          <ErrorText error={changePassword.error} />
-          {changePassword.isSuccess && <div className="notice info">{t('settings.passwordChanged')}</div>}
-          <div>
-            <button className="btn primary" type="submit" disabled={changePassword.isPending}>
-              {t('settings.password')}
+          <div className="row">
+            <button className="btn" onClick={() => download.mutate()} disabled={download.isPending}>
+              <Icon name="download" /> {t('settings.download')}
             </button>
+            <span className="muted small">{t('settings.downloadHint')}</span>
           </div>
-        </form>
+          <ErrorText error={download.error} />
+
+          <div className="row">
+            <button className="btn" onClick={() => fileInput.current?.click()} disabled={open.isPending}>
+              <Icon name="upload" /> {t('settings.replace')}
+            </button>
+            <span className="muted small">{t('settings.replaceHint')}</span>
+            <input ref={fileInput} type="file" accept=".db,.sqlite,application/x-sqlite3" hidden onChange={e => onPick(e.target.files?.[0])} />
+          </div>
+          {open.isSuccess && <div className="notice info">{t('settings.replaced')}</div>}
+          <ErrorText error={open.error} />
+        </div>
       </Card>
 
-      <Card title={t('settings.danger')} hint={t('settings.dangerHint')}>
-        <form className="row" onSubmit={onDelete}>
-          <input
-            type="password"
-            value={deletePassword}
-            onChange={e => setDeletePassword(e.target.value)}
-            placeholder={t('settings.deleteConfirm')}
-            autoComplete="current-password"
-            required
-            style={{ maxWidth: 280 }}
-            dir="ltr"
-          />
-          <button className="btn danger" type="submit" disabled={deleteAccount.isPending}>
-            {t('settings.danger')}
-          </button>
-        </form>
-        {deleteAccount.error && (
-          <div style={{ marginTop: 8 }}>
-            <ErrorText error={deleteAccount.error} />
-          </div>
-        )}
+      <Card title={t('nav.signOut')} hint={backend.kind === 'drive' ? t('settings.signOutDrive') : t('settings.signOutBrowser')}>
+        <button className="btn" onClick={() => signOut.mutate(undefined, { onSuccess: () => navigate('/') })} disabled={signOut.isPending}>
+          <span className="flip">
+            <Icon name="logout" />
+          </span>{' '}
+          {t('nav.signOut')}
+        </button>
+        <ErrorText error={signOut.error} />
       </Card>
     </div>
   );

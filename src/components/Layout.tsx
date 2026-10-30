@@ -4,6 +4,7 @@ import { useMe, useSignOut } from '../auth';
 import { useI18n } from '../i18n';
 import type { MessageKey } from '../locales';
 import { useTheme } from '../theme';
+import { SaveLine, SaveProblem } from './SaveStatus';
 import { Icon, initialOf, Logo } from './ui';
 
 const NAV: Array<{ to: string; label: MessageKey; icon: 'overview' | 'funds' | 'compare' | 'upload' }> = [
@@ -50,7 +51,7 @@ export function Layout() {
   const { data: me } = useMe();
   const signOut = useSignOut();
   const navigate = useNavigate();
-  const name = me?.displayName || me?.username || '';
+  const name = me?.displayName || me?.email || t('auth.thisBrowser');
   const onSignOut = () => signOut.mutate(undefined, { onSettled: () => navigate('/') });
 
   return (
@@ -74,11 +75,12 @@ export function Layout() {
             <LangToggle className="btn" />
             <ThemeToggle />
           </div>
+          <SaveLine />
           <div className="user-chip">
             <span className="avatar">{initialOf(name)}</span>
             <span className="who">
               <b dir="auto">{name}</b>
-              <span dir="ltr">@{me?.username}</span>
+              <span dir="ltr">{me?.email || t('auth.thisBrowser')}</span>
             </span>
             <button className="btn ghost icon-btn" title={t('nav.signOut')} aria-label={t('nav.signOut')} onClick={onSignOut}>
               <span className="flip">
@@ -101,6 +103,7 @@ export function Layout() {
           </div>
         </header>
         <main>
+          <SaveProblem />
           <Outlet />
         </main>
         <nav className="tabbar" aria-label={t('nav.main')}>

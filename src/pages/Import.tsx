@@ -95,12 +95,12 @@ export function Import() {
           </div>
         </div>
         <div className="row">
-          <a className="btn" href={api.templateUrl} download>
+          <button className="btn" onClick={() => void api.downloadTemplate()}>
             <Icon name="download" /> {t('import.template')}
-          </a>
-          <a className="btn" href={api.exportUrl} download>
+          </button>
+          <button className="btn" onClick={() => void api.downloadExport()}>
             <Icon name="download" /> {t('import.export')}
-          </a>
+          </button>
         </div>
       </div>
 

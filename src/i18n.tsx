@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { ApiError } from './api';
+import { AppError } from '../shared/errors';
 import { en, he, type MessageKey } from './locales';
 
 export type Lang = 'en' | 'he';
@@ -63,7 +63,7 @@ interface I18n {
   arrow: string;
   setLang: (lang: Lang) => void;
   t: (key: MessageKey, vars?: Record<string, string | number>) => string;
-  /** A user-facing message for an error, localized when the server sent a known code. */
+  /** A user-facing message for an error, localized when it carries a known code. */
   errorText: (err: unknown) => string;
   fmt: Formatters;
 }
@@ -71,13 +71,6 @@ interface I18n {
 const I18nContext = createContext<I18n | null>(null);
 
 const hasKey = (key: string): key is MessageKey => key in en;
-
-// Validation errors on these fields have their own message.
-const FIELD_ERRORS: Record<string, MessageKey> = {
-  username: 'error.invalid_username',
-  password: 'error.invalid_password',
-  newPassword: 'error.invalid_password',
-};
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(initialLang);
@@ -115,15 +108,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       },
       t,
       errorText: err => {
-        if (!(err instanceof ApiError)) {
+        if (!(err instanceof AppError)) {
           return t('common.error');
         }
 
         if (err.code === 'validation') {
-          const fieldKey = err.field ? FIELD_ERRORS[err.field] : undefined;
-
-          // The server's English message is specific; in Hebrew a generic line beats English text.
-          return fieldKey ? t(fieldKey) : lang === 'en' ? err.message : t('error.validation');
+          // The English message is specific; in Hebrew a generic line beats English text.
+          return lang === 'en' ? err.message : t('error.validation');
         }
 
         const key = `error.${err.code}`;

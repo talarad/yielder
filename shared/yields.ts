@@ -26,8 +26,8 @@ import {
   type SeriesPoint,
   type YearlyYield,
   type Yields,
-} from '../../shared/types';
-import { addMonths, monthFromIndex, monthIndex, monthsBetween, yearOf } from '../../shared/months';
+} from './types';
+import { addMonths, monthFromIndex, monthIndex, monthsBetween, yearOf } from './months';
 
 export interface Step {
   gain: number;

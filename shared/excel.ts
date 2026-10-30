@@ -10,9 +10,9 @@
 
 import ExcelJS from 'exceljs';
 
-import { PERIODS, type Entry, type FundDetail, type FundType, type ImportFormat, type ImportFund, type ImportWarning } from '../../shared/types';
+import { PERIODS, type Entry, type FundDetail, type FundType, type ImportFormat, type ImportFund, type ImportWarning } from './types';
 import { inferFundType, normalizeName, normalizeStatus } from './fundTypes';
-import { monthFromDate } from '../../shared/months';
+import { monthFromDate } from './months';
 
 type CellValue = ExcelJS.CellValue;
 type Field =
@@ -328,7 +328,7 @@ function applyMeta(d: Draft, meta: Partial<Record<Field, string>>) {
   }
 }
 
-export async function parseWorkbook(data: Buffer | ArrayBuffer): Promise<ParseResult> {
+export async function parseWorkbook(data: ArrayBuffer | Uint8Array): Promise<ParseResult> {
   const wb = new ExcelJS.Workbook();
 
   await wb.xlsx.load(data as ArrayBuffer);
@@ -479,7 +479,7 @@ function addEntriesSheet(wb: ExcelJS.Workbook) {
   return ws;
 }
 
-export async function buildExport(funds: FundDetail[]): Promise<Buffer> {
+export async function buildExport(funds: FundDetail[]): Promise<Uint8Array> {
   const wb = new ExcelJS.Workbook();
 
   wb.creator = 'Yielder';
@@ -511,10 +511,10 @@ export async function buildExport(funds: FundDetail[]): Promise<Buffer> {
     });
   }
 
-  return Buffer.from(await wb.xlsx.writeBuffer());
+  return new Uint8Array(await wb.xlsx.writeBuffer());
 }
 
-export async function buildTemplate(): Promise<Buffer> {
+export async function buildTemplate(): Promise<Uint8Array> {
   const wb = new ExcelJS.Workbook();
   const fundsWs = addFundsSheet(wb);
   const entriesWs = addEntriesSheet(wb);
@@ -553,5 +553,5 @@ export async function buildTemplate(): Promise<Buffer> {
   ].forEach((line, i) => (about.getCell(i + 1, 1).value = line));
   about.getRow(1).font = { bold: true };
 
-  return Buffer.from(await wb.xlsx.writeBuffer());
+  return new Uint8Array(await wb.xlsx.writeBuffer());
 }

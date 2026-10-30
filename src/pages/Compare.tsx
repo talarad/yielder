@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 
 import type { BenchmarkReturn, CompareResult, FundType, Period } from '../../shared/types';
 import { api } from '../api';
-import { useMe } from '../auth';
 import { FoldToggle, foldRows, GapRow, MarketSource, Standing, TrackFilter, useBenchmarkNames, useTrackFilter } from '../components/BenchmarkTable';
 import { PeerRange, RangeScale } from '../components/PeerRange';
 import { balanceChange, Card, ErrorBox, Loading, Monogram, Pct, PeriodPicker, Tabs, TypeLabel, typeKey, useTabParam } from '../components/ui';
 import { useI18n } from '../i18n';
 
-const TABS = ['funds', 'market', 'people'] as const;
+const TABS = ['funds', 'market'] as const;
 
 export function Compare() {
   const { t, fmt } = useI18n();
@@ -30,9 +29,7 @@ export function Compare() {
   const tabs = [
     { id: 'funds' as const, label: t('compare.tab.funds') },
     { id: 'market' as const, label: t('compare.tab.market') },
-    ...(r.hasPeople ? [{ id: 'people' as const, label: t('compare.tab.people') }] : []),
   ];
-  const active = tab === 'people' && !r.hasPeople ? 'funds' : tab;
   // Sits in each tab's card, next to the table it changes; one period for all tabs.
   const picker = <PeriodPicker value={period} onChange={setPeriod} />;
 
@@ -45,11 +42,10 @@ export function Compare() {
         </div>
       </div>
 
-      <Tabs label={t('compare.title')} value={active} onChange={id => setTab(id)} tabs={tabs} />
+      <Tabs label={t('compare.title')} value={tab} onChange={id => setTab(id)} tabs={tabs} />
 
-      {active === 'funds' && <FundsVsMarket r={r} picker={picker} />}
-      {active === 'market' && <MarketTable r={r} picker={picker} />}
-      {active === 'people' && <People r={r} picker={picker} />}
+      {tab === 'funds' && <FundsVsMarket r={r} picker={picker} />}
+      {tab === 'market' && <MarketTable r={r} picker={picker} />}
     </div>
   );
 }
@@ -228,45 +224,5 @@ function MarketTable({ r, picker }: { r: CompareResult; picker: ReactNode }) {
         <FoldToggle total={rows.filter(row => !row.you).length} expanded={expanded} onToggle={() => setExpanded(e => !e)} />
       </div>
     </Card>
-  );
-}
-
-function People({ r, picker }: { r: CompareResult; picker: ReactNode }) {
-  const { t } = useI18n();
-  const { data: me } = useMe();
-  const s = r.portfolio;
-
-  return (
-    <>
-      {me && !me.shareAnonymously && (
-        <div className="notice info">
-          {t('compare.sharingOff')} <Link to="/settings">{t('nav.settings')}</Link>
-        </div>
-      )}
-      <Card title={t('compare.portfolio')} hint={t('compare.peopleIntro')} actions={picker}>
-        {s.count > 0 && s.mine !== null ? (
-          <div className="stack" style={{ gap: 16 }}>
-            <div className="duel">
-              <div>
-                <div className="eyebrow">{t('compare.you')}</div>
-                <div className="value">
-                  <Pct value={s.mine} />
-                </div>
-              </div>
-              <div>
-                <div className="eyebrow">{t('compare.median')}</div>
-                <div className="value" style={{ color: 'var(--ink-2)' }}>
-                  <Pct value={s.median} />
-                </div>
-              </div>
-            </div>
-            {s.percentile !== null && <span className="chip accent">{t('compare.betterThanPeople', { pct: `${Math.round(s.percentile)}%` })}</span>}
-            <PeerRange stats={s} />
-          </div>
-        ) : (
-          <p className="muted">{t('compare.noData')}</p>
-        )}
-      </Card>
-    </>
   );
 }

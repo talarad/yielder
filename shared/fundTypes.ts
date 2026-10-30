@@ -1,4 +1,4 @@
-import { FUND_STATUSES, FUND_TYPES, type FundStatus, type FundType } from '../../shared/types';
+import { FUND_STATUSES, FUND_TYPES, type FundStatus, type FundType } from './types';
 
 // Order matters: more specific patterns first ("השתלמות עצמאיים" is an education fund, not self-managed).
 const NAME_RULES: Array<[RegExp, FundType]> = [

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import type { Entry, Fund } from '../../shared/types';
-import { addMonths } from '../../shared/months';
+import type { Entry, Fund } from './types';
+import { addMonths } from './months';
 import { buildPortfolio, chainReturns, computeYearly, computeYield, fundTrack, peerStats, summarizeFund } from './yields';
 
 const close = (actual: number | null, expected: number, eps = 1e-9) => {

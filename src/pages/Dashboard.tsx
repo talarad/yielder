@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { FundSummary, Period, Portfolio } from '../../shared/types';
@@ -8,7 +8,7 @@ import { useMe } from '../auth';
 import { BalanceChart, Donut, fundStyles, ReturnsChart, seriesIn, type Slice } from '../components/charts';
 import { FundsTable } from '../components/FundsTable';
 import { ReturnsTable } from '../components/ReturnsTable';
-import { balanceChange, Card, ErrorBox, Icon, Loading, Pct, periodKey, PeriodPicker, Stat, StaleNotice, Tabs, toneOf, typeClass, typeKey, useTabParam } from '../components/ui';
+import { balanceChange, Card, ErrorBox, ErrorText, Icon, Loading, Pct, periodKey, PeriodPicker, Stat, StaleNotice, Tabs, toneOf, typeClass, typeKey, useTabParam } from '../components/ui';
 import { useI18n } from '../i18n';
 import { useTheme } from '../theme';
 import type { MessageKey } from '../locales';
@@ -55,6 +55,7 @@ export function Dashboard() {
             <Icon name="upload" /> {t('funds.import')}
           </Link>
         </div>
+        <OpenDataFile />
       </div>
     );
   }
@@ -83,7 +84,7 @@ export function Dashboard() {
     <div className="stack">
       <div className="page-head" style={{ marginBottom: 0 }}>
         <div>
-          <div className="eyebrow">{t(greetingKey(), { name: me?.displayName || me?.username || '' })}</div>
+          <div className="eyebrow">{t(greetingKey(), { name: me?.displayName || '' })}</div>
           <h1 style={{ marginTop: 4 }}>{t('nav.dashboard')}</h1>
           <div className="sub">{t('dash.subtitle', { month: fmt.month(p.asOf), count: openFunds.length })}</div>
         </div>
@@ -304,4 +305,23 @@ function fundSlices(funds: FundSummary[], colors: Record<string, string>, t: Ret
   }
 
   return slices;
+}
+
+/** Brings in an existing Yielder file (a downloaded copy, or the old server database). */
+function OpenDataFile() {
+  const { t } = useI18n();
+  const qc = useQueryClient();
+  const input = useRef<HTMLInputElement>(null);
+  const open = useMutation({ mutationFn: api.openDataFile, onSuccess: () => qc.invalidateQueries() });
+
+  return (
+    <div className="stack" style={{ gap: 6, marginTop: 18, alignItems: 'center' }}>
+      <button className="btn ghost" onClick={() => input.current?.click()} disabled={open.isPending}>
+        {t('dash.openFile')}
+      </button>
+      <span className="muted small">{t('dash.openFileHint')}</span>
+      <input ref={input} type="file" accept=".db,.sqlite,application/x-sqlite3" hidden onChange={e => e.target.files?.[0] && open.mutate(e.target.files[0])} />
+      <ErrorText error={open.error} />
+    </div>
+  );
 }

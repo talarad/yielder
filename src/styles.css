@@ -245,6 +245,69 @@ p {
   flex: 1 1 auto;
 }
 
+/* Where the data is saved, under the navigation */
+.save-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding-inline: 4px;
+}
+
+.save-line .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gain-text);
+  flex: none;
+}
+
+.save-line.pending .dot,
+.save-line.saving .dot {
+  background: var(--muted);
+}
+
+.save-line.error .dot,
+.save-line.conflict .dot,
+.save-line.reauth .dot {
+  background: var(--loss-text);
+}
+
+.save-problem {
+  margin-bottom: 16px;
+}
+
+/* Sign-in */
+.google-btn {
+  justify-content: center;
+  gap: 10px;
+}
+
+.google-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.or-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.or-line::before,
+.or-line::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--border);
+}
+
 .user-chip {
   display: flex;
   align-items: center;
