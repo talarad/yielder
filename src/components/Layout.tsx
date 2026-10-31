@@ -4,7 +4,7 @@ import { useMe, useSignOut } from '../auth';
 import { useI18n } from '../i18n';
 import type { MessageKey } from '../locales';
 import { useTheme } from '../theme';
-import { SaveLine, SaveProblem } from './SaveStatus';
+import { OfflineNote, SaveLine, SaveProblem } from './SaveStatus';
 import { Icon, initialOf, Logo } from './ui';
 
 const NAV: Array<{ to: string; label: MessageKey; icon: 'overview' | 'plus' | 'funds' | 'compare' | 'upload' }> = [
@@ -105,6 +105,7 @@ export function Layout() {
         </header>
         <main>
           <SaveProblem />
+          <OfflineNote />
           <Outlet />
         </main>
         <nav className="tabbar" aria-label={t('nav.main')}>

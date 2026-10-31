@@ -11,6 +11,10 @@ export interface StorageBackend {
   save(bytes: Uint8Array, options?: { force?: boolean }): Promise<void>;
   /** Gets a fresh sign-in after it expired (must run from a click: it may open a Google window). */
   reconnect?(): Promise<void>;
+  /** False while the sign-in has expired: saving first needs reconnect(). */
+  isConnected?(): boolean;
+  /** True when load() returned the copy kept on this device, not yet checked against storage. */
+  offlineCopy?: boolean;
   /** A link to open the file where it lives, if it has one. */
   fileUrl(): string | null;
   fileName: string;

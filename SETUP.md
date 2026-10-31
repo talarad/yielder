@@ -71,9 +71,11 @@ the **Deploy** job then publishes the site with it. You can run it by hand from 
 
 ## Good to know
 
-- **Signing in again**: Google sign-ins in the browser last an hour. After that, a reload asks
-  you to click **Continue with Google** again, and if it expires while you're working, a banner
-  offers **Reconnect** before anything is lost.
+- **Staying signed in**: Google sign-ins in the browser last an hour. Yielder keeps a copy of
+  your file on each device you use, so after that it still opens straight into your data
+  ("Copy on this device" in the sidebar). Saving reconnects by itself (a Google window opens and
+  closes on its own); if the browser blocks that window, a banner offers **Reconnect**. Signing
+  out removes the copy from that device, so sign out on shared computers.
 - **Two devices**: if the file changed on another device since you opened it, Yielder doesn't
   overwrite it; it asks whether to load the latest version or keep yours.
 - **Backups**: Google Drive keeps earlier versions of the file (right-click → **Manage

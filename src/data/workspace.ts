@@ -20,7 +20,8 @@ let sqlJs: Promise<SqlJsStatic> | null = null;
 
 const loadSql = () => (sqlJs ??= initSqlJs({ locateFile: () => wasmUrl }));
 
-export type SaveState = 'saved' | 'pending' | 'saving' | 'error' | 'conflict' | 'reauth';
+/** 'offline': opened from this device's copy (Google sign-in expired), with nothing unsaved. */
+export type SaveState = 'saved' | 'offline' | 'pending' | 'saving' | 'error' | 'conflict' | 'reauth';
 
 export interface SaveStatus {
   state: SaveState;
@@ -73,7 +74,7 @@ class Workspace {
 
     this.dirty = false;
     this.setStatus({ state: 'saving' });
-    this.saving = this.backend.save(this.db.export(), options);
+    this.saving = this.write(options);
 
     try {
       await this.saving;
@@ -91,6 +92,20 @@ class Workspace {
     }
   }
 
+  private async write(options: { force?: boolean }) {
+    // Shortly after a click the browser allows Google's window, so an expired sign-in renews by
+    // itself (the window closes on its own). Otherwise the save stops at "Reconnect".
+    if (this.backend.isConnected?.() === false && navigator.userActivation?.isActive) {
+      try {
+        await this.backend.reconnect?.();
+      } catch {
+        throw new ReauthError();
+      }
+    }
+
+    await this.backend.save(this.db.export(), options);
+  }
+
   /** Swaps in other data (a file the person opened, or the latest version from Drive). */
   replace(db: Sqlite) {
     clearTimeout(this.timer);
@@ -100,7 +115,7 @@ class Workspace {
   }
 
   get unsaved() {
-    return this.status.state !== 'saved';
+    return this.status.state !== 'saved' && this.status.state !== 'offline';
   }
 
   setStatus(patch: Partial<SaveStatus>) {
@@ -146,6 +161,8 @@ export async function openWorkspace(backend: StorageBackend): Promise<Workspace>
   if (opened?.converted) {
     // An old-format file was converted: keep the converted version.
     current.change(() => {});
+  } else if (backend.offlineCopy) {
+    current.setStatus({ state: 'offline' });
   }
 
   return current;
@@ -202,6 +219,22 @@ export async function reloadFromStorage() {
 
   ws.replace(bytes ? openDataFile(SQL, bytes).db : emptyDataFile(SQL));
   ws.setStatus({ state: 'saved', error: null });
+}
+
+/**
+ * Signs in to Google again (from a click). When the copy on this device was open with nothing
+ * unsaved, loads the latest file from Drive; otherwise saves what's pending.
+ */
+export async function reconnect() {
+  const ws = workspace();
+
+  await ws.backend.reconnect?.();
+
+  if (ws.status.state === 'offline') {
+    await reloadFromStorage();
+  } else {
+    await ws.save();
+  }
 }
 
 /** Saves anything pending, then closes. Throws (and stays open) if the last changes can't be saved. */

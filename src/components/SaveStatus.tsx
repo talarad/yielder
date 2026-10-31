@@ -1,19 +1,44 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { reloadFromStorage, useSaveStatus, workspace } from '../data/workspace';
+import { reconnect, reloadFromStorage, useSaveStatus, workspace } from '../data/workspace';
 import { useI18n } from '../i18n';
 import { Icon } from './ui';
 
-/** Quiet line under the navigation: "Saved to Google Drive" / "Saving…". */
+/** Signs in to Google again and refreshes everything shown (from a click). */
+function useReconnect() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      await reconnect();
+      await qc.invalidateQueries();
+    },
+  });
+}
+
+/** Quiet line under the navigation: "Saved to Google Drive" / "Saving…" / "Copy on this device". */
 export function SaveLine() {
   const { t } = useI18n();
   const { state } = useSaveStatus();
+  const connect = useReconnect();
   let kind: 'drive' | 'browser' = 'browser';
 
   try {
     kind = workspace().backend.kind;
   } catch {
     return null;
+  }
+
+  if (state === 'offline') {
+    return (
+      <div className="save-line offline" role="status" title={t('save.offlineHint')}>
+        <span className="dot" aria-hidden="true" />
+        {t('save.offline')} ·{' '}
+        <button className="link-btn" onClick={() => connect.mutate()} disabled={connect.isPending}>
+          {t('save.connect')}
+        </button>
+      </div>
+    );
   }
 
   const text = state === 'saved' ? t(kind === 'drive' ? 'save.savedDrive' : 'save.savedBrowser') : state === 'saving' || state === 'pending' ? t('save.saving') : t('save.notSaved');
@@ -26,6 +51,32 @@ export function SaveLine() {
   );
 }
 
+/** On phones (no sidebar): the same "copy on this device" note, above the page. */
+export function OfflineNote() {
+  const { t, errorText } = useI18n();
+  const { state } = useSaveStatus();
+  const connect = useReconnect();
+
+  if (state !== 'offline') {
+    return null;
+  }
+
+  return (
+    <div className="notice info offline-note" role="status">
+      <Icon name="alert" size={18} />
+      <div className="stack" style={{ gap: 6 }}>
+        <span>{t('save.offlineHint')}</span>
+        <div>
+          <button className="btn small" onClick={() => connect.mutate()} disabled={connect.isPending}>
+            {t('save.connect')}
+          </button>
+        </div>
+        {connect.error && <span className="small">{errorText(connect.error)}</span>}
+      </div>
+    </div>
+  );
+}
+
 /** When the last change couldn't be saved: what happened and the one button that fixes it. */
 export function SaveProblem() {
   const { t, errorText } = useI18n();
@@ -33,8 +84,6 @@ export function SaveProblem() {
   const { state, error } = useSaveStatus();
   const fix = useMutation({
     mutationFn: async (action: 'retry' | 'reconnect' | 'reload' | 'keep') => {
-      const ws = workspace();
-
       if (action === 'reload') {
         await reloadFromStorage();
         await qc.invalidateQueries();
@@ -43,10 +92,12 @@ export function SaveProblem() {
       }
 
       if (action === 'reconnect') {
-        await ws.backend.reconnect?.();
+        await reconnect();
+
+        return;
       }
 
-      await ws.save({ force: action === 'keep' });
+      await workspace().save({ force: action === 'keep' });
     },
   });
 

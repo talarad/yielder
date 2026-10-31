@@ -2,11 +2,17 @@
 // Services in the browser, with the drive.file scope: Yielder can see and change only the file it
 // created, never the rest of the Drive. There is no server: the browser talks to Google directly.
 //
-// Access tokens last an hour and aren't refreshed in the background (that would need a server).
-// The token is kept for the tab (sessionStorage), so reloads don't ask again; when it expires,
-// saving asks for one click on "Reconnect".
+// Access tokens last an hour and can't be refreshed in the background without a server. So:
+// - the token is kept for its hour across tabs and restarts (localStorage);
+// - every file loaded or saved is also copied to this device, and after the token expired the app
+//   opens that copy, without the sign-in screen;
+// - saving then renews the token first (a Google window that closes by itself, allowed because
+//   it follows a click), and checks the file's version, so a newer change from another device is
+//   never overwritten silently.
+// Signing out forgets the token, the account and the copy.
 
 import { AppError } from '../../shared/errors';
+import { deviceCopies, type CopyStore } from './browser';
 import { ConflictError, ReauthError, type StorageBackend } from './types';
 
 export const GOOGLE_CLIENT_ID = (import.meta.env?.VITE_GOOGLE_CLIENT_ID as string | undefined) || null;
@@ -18,6 +24,7 @@ const UPLOAD = 'https://www.googleapis.com/upload/drive/v3';
 const FILE_NAME = 'Yielder data.db';
 const MIME = 'application/x-sqlite3';
 const TOKEN_KEY = 'yielder-google-token';
+const ACCOUNT_KEY = 'yielder-google-account';
 /** Files Yielder made carry this, so it finds its file wherever the person moves it. */
 const MARK = { key: 'yielder', value: 'data' };
 
@@ -25,6 +32,8 @@ export interface GoogleToken {
   access: string;
   expiresAt: number;
 }
+
+type Account = { name: string; email: string | null };
 
 type Http = (input: string, init?: RequestInit) => Promise<Response>;
 
@@ -103,50 +112,65 @@ async function requestToken(hint?: string): Promise<GoogleToken> {
       .requestAccessToken({ prompt: '', login_hint: hint });
   });
 
-  try {
-    sessionStorage.setItem(TOKEN_KEY, JSON.stringify(token));
-  } catch {
-    // storage unavailable: the next reload asks again
-  }
+  store(TOKEN_KEY, token);
 
   return token;
 }
 
-function storedToken(): GoogleToken | null {
+function store(key: string, value: unknown) {
   try {
-    const token = JSON.parse(sessionStorage.getItem(TOKEN_KEY) ?? 'null') as GoogleToken | null;
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // storage unavailable: the next visit asks again
+  }
+}
 
-    // Keep a couple of minutes of margin, so a save doesn't start with a token about to expire.
-    return token && token.expiresAt - Date.now() > 2 * 60_000 ? token : null;
+function stored<T>(key: string): T | null {
+  try {
+    return JSON.parse(localStorage.getItem(key) ?? 'null') as T | null;
   } catch {
     return null;
   }
 }
 
-function forgetToken() {
+function forget(...keys: string[]) {
   try {
-    sessionStorage.removeItem(TOKEN_KEY);
+    keys.forEach(k => localStorage.removeItem(k));
   } catch {
     // storage unavailable
   }
 }
 
+/** Keeps a minute of margin, so a save doesn't start with a token about to expire. */
+const isFresh = (token: GoogleToken | null): token is GoogleToken => !!token && token.expiresAt - Date.now() > 60_000;
+
 export class DriveBackend implements StorageBackend {
   readonly kind = 'drive';
   readonly fileName = FILE_NAME;
+  offlineCopy = false;
   private fileId: string | null = null;
   private version: string | null = null;
   private link: string | null = null;
 
   constructor(
-    private token: GoogleToken,
-    public account: { name: string; email: string | null },
+    /** null when opened from this device's copy after the sign-in expired. */
+    private token: GoogleToken | null,
+    public account: Account,
     private http: Http = (input, init) => fetch(input, init),
     private renew: (hint?: string) => Promise<GoogleToken> = requestToken,
+    private copies: CopyStore = deviceCopies,
   ) {}
 
+  private get copyKey() {
+    return this.account.email ?? 'google';
+  }
+
+  isConnected() {
+    return isFresh(this.token);
+  }
+
   private async call(url: string, init: RequestInit = {}): Promise<Response> {
-    if (this.token.expiresAt <= Date.now()) {
+    if (!isFresh(this.token)) {
       throw new ReauthError();
     }
 
@@ -173,7 +197,28 @@ export class DriveBackend implements StorageBackend {
     this.token = await this.renew(this.account.email ?? undefined);
   }
 
+  /** Keeps this device's copy in step with the file in Drive (best effort: it's only a copy). */
+  private remember(bytes: Uint8Array) {
+    void this.copies.put(this.copyKey, { bytes, fileId: this.fileId, version: this.version, link: this.link, savedAt: Date.now() }).catch(() => {});
+  }
+
   async load(): Promise<Uint8Array | null> {
+    if (!this.isConnected()) {
+      const copy = await this.copies.get(this.copyKey).catch(() => null);
+
+      if (!copy) {
+        throw new ReauthError();
+      }
+
+      // Saving later checks this version, so changes made elsewhere meanwhile aren't overwritten.
+      this.fileId = copy.fileId;
+      this.version = copy.version;
+      this.link = copy.link;
+      this.offlineCopy = true;
+
+      return copy.bytes;
+    }
+
     const q = encodeURIComponent(`appProperties has { key='${MARK.key}' and value='${MARK.value}' } and trashed = false`);
     const { files } = (await (await this.call(`${API}/files?q=${q}&spaces=drive&orderBy=modifiedTime desc&fields=files(id,version,webViewLink)`)).json()) as {
       files: Array<{ id: string; version: string; webViewLink?: string }>;
@@ -185,17 +230,22 @@ export class DriveBackend implements StorageBackend {
     }
 
     const res = await this.call(`${API}/files/${file.id}?alt=media`);
+    const bytes = new Uint8Array(await res.arrayBuffer());
 
     this.fileId = file.id;
     this.version = file.version;
     this.link = file.webViewLink ?? null;
+    this.offlineCopy = false;
+    this.remember(bytes);
 
-    return new Uint8Array(await res.arrayBuffer());
+    return bytes;
   }
 
   async save(bytes: Uint8Array, { force = false } = {}) {
     if (!this.fileId) {
       await this.create(bytes);
+      this.offlineCopy = false;
+      this.remember(bytes);
 
       return;
     }
@@ -215,6 +265,8 @@ export class DriveBackend implements StorageBackend {
     });
 
     this.version = ((await res.json()) as { version: string }).version;
+    this.offlineCopy = false;
+    this.remember(bytes);
   }
 
   private async create(bytes: Uint8Array) {
@@ -248,11 +300,12 @@ export class DriveBackend implements StorageBackend {
   }
 
   signOut() {
-    forgetToken();
+    forget(TOKEN_KEY, ACCOUNT_KEY);
+    void this.copies.remove(this.copyKey).catch(() => {});
   }
 }
 
-async function accountOf(token: GoogleToken, http: Http = (input, init) => fetch(input, init)) {
+async function accountOf(token: GoogleToken, http: Http = (input, init) => fetch(input, init)): Promise<Account> {
   try {
     const res = await http('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${token.access}` } });
     const info = (await res.json()) as { name?: string; email?: string };
@@ -266,13 +319,32 @@ async function accountOf(token: GoogleToken, http: Http = (input, init) => fetch
 /** Opens Google's sign-in (from a click). */
 export async function signInWithGoogle(): Promise<DriveBackend> {
   const token = await requestToken();
+  const account = await accountOf(token);
 
-  return new DriveBackend(token, await accountOf(token));
+  store(ACCOUNT_KEY, account);
+
+  return new DriveBackend(token, account);
 }
 
-/** The same tab's earlier sign-in, if it is still valid (no Google window). */
-export async function resumeGoogle(): Promise<DriveBackend | null> {
-  const token = storedToken();
+/**
+ * The earlier sign-in on this device, without a Google window: with Drive while its token is valid,
+ * otherwise this device's copy of the file. Null when there's neither.
+ */
+export async function resumeGoogle(copies: CopyStore = deviceCopies): Promise<DriveBackend | null> {
+  const token = stored<GoogleToken>(TOKEN_KEY);
+  const account = stored<Account>(ACCOUNT_KEY);
 
-  return token ? new DriveBackend(token, await accountOf(token)) : null;
+  if (isFresh(token)) {
+    const who = account ?? (await accountOf(token));
+
+    store(ACCOUNT_KEY, who);
+
+    return new DriveBackend(token, who, undefined, undefined, copies);
+  }
+
+  if (account?.email && (await copies.get(account.email).catch(() => null))) {
+    return new DriveBackend(null, account, undefined, undefined, copies);
+  }
+
+  return null;
 }

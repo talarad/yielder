@@ -38,7 +38,10 @@ converted on the fly.
   `drive.file` permission, so it can open the file it created and nothing else in your Drive.
   The browser talks to Google directly; no one else (not the hosting, not the developer) holds
   your data. Drive keeps earlier versions of the file, and **Settings → Download a copy** gives
-  you the whole file any time.
+  you the whole file any time. Each device also keeps a copy (in the browser's storage), so the
+  app opens straight into your data after the hour-long Google sign-in expired; saving then
+  reconnects first and checks the file's version, so a change from another device is never
+  overwritten silently. Signing out removes the copy.
 - **This browser only**: the same file, kept in the browser's storage on this device. Good for
   trying it out; download a copy now and then.
 - Every change is saved a moment later; the sidebar shows "Saved to Google Drive" / "Saving…".

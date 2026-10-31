@@ -274,8 +274,38 @@ p {
   background: var(--loss-text);
 }
 
+.save-line.offline .dot {
+  background: var(--warn-icon);
+}
+
+/* A button that reads like a link (inside a line of text). */
+.link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--accent-text);
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
 .save-problem {
   margin-bottom: 16px;
+}
+
+/* Phones only: the sidebar (with its save line) is hidden there. */
+.notice.offline-note {
+  display: none;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 860px) {
+  .notice.offline-note {
+    display: flex;
+  }
 }
 
 /* Sign-in */

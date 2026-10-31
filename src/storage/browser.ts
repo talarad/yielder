@@ -55,3 +55,35 @@ export function browserBackend(): StorageBackend {
 export async function clearBrowserData() {
   await run('readwrite', s => s.delete(KEY));
 }
+
+/**
+ * The last copy of a Google Drive file seen on this device, so the app opens straight into the data
+ * after the Google sign-in expired. Removed on sign-out.
+ */
+export interface DeviceCopy {
+  bytes: Uint8Array;
+  fileId: string | null;
+  version: string | null;
+  link: string | null;
+  savedAt: number;
+}
+
+export interface CopyStore {
+  get(key: string): Promise<DeviceCopy | null>;
+  put(key: string, copy: DeviceCopy): Promise<void>;
+  remove(key: string): Promise<void>;
+}
+
+export const deviceCopies: CopyStore = {
+  get: async key => {
+    const value = await run<unknown>('readonly', s => s.get(`copy:${key}`));
+
+    return value && (value as DeviceCopy).bytes instanceof Uint8Array ? (value as DeviceCopy) : null;
+  },
+  put: async (key, copy) => {
+    await run('readwrite', s => s.put(copy, `copy:${key}`));
+  },
+  remove: async key => {
+    await run('readwrite', s => s.delete(`copy:${key}`));
+  },
+};
