@@ -1,3 +1,4 @@
+import { AppError } from '../../shared/errors';
 import { useSignIn } from '../auth';
 import { LangToggle, ThemeToggle } from '../components/Layout';
 import { ErrorText, Icon, Logo } from '../components/ui';
@@ -22,6 +23,8 @@ export function Login() {
   const { t } = useI18n();
   const signIn = useSignIn();
   const last = lastStorage();
+  // The sign-in server sends failed Google sign-ins back here with the reason.
+  const returned = new URLSearchParams(window.location.search).get('auth_error');
 
   return (
     <div className="auth-page">
@@ -62,7 +65,7 @@ export function Login() {
           </button>
           <p className="small muted">{t('auth.browserHint')}</p>
 
-          <ErrorText error={signIn.error} />
+          <ErrorText error={signIn.error ?? (returned ? new AppError('Google sign-in failed.', returned) : null)} />
         </div>
       </div>
       <a className="small auth-footer" href={`${import.meta.env.BASE_URL}privacy.html`}>

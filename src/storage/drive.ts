@@ -2,7 +2,11 @@
 // Services in the browser, with the drive.file scope: Yielder can see and change only the file it
 // created, never the rest of the Drive. There is no server: the browser talks to Google directly.
 //
-// Access tokens last an hour and can't be refreshed in the background without a server. So:
+// On a host with Yielder's sign-in server (Cloudflare; built with VITE_AUTH=server) sign-in is a
+// redirect to Google, and the server hands out fresh tokens for months (server/auth.ts): no Google
+// windows, and the app always opens the latest file from Drive.
+//
+// Without it (GitHub Pages), access tokens last an hour and can't be refreshed in the background. So:
 // - the token is kept for its hour across tabs and restarts (localStorage);
 // - every file loaded or saved is also copied to this device, and after the token expired the app
 //   opens that copy, without the sign-in screen;
@@ -16,6 +20,8 @@ import { deviceCopies, type CopyStore } from './browser';
 import { ConflictError, ReauthError, type StorageBackend } from './types';
 
 export const GOOGLE_CLIENT_ID = (import.meta.env?.VITE_GOOGLE_CLIENT_ID as string | undefined) || null;
+export const SERVER_SIGN_IN = import.meta.env?.VITE_AUTH === 'server';
+const AUTH_API = `${import.meta.env?.BASE_URL ?? '/'}api/auth`;
 
 const SCOPES = 'https://www.googleapis.com/auth/drive.file openid email profile';
 const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
@@ -141,12 +147,46 @@ function forget(...keys: string[]) {
   }
 }
 
+/** A fresh token from the sign-in server, or null when not signed in there. */
+async function serverToken(http: Http = (input, init) => fetch(input, init)): Promise<{ token: GoogleToken; account: Account } | null> {
+  let res: Response;
+
+  try {
+    res = await http(`${AUTH_API}/token`, { method: 'POST', headers: { 'X-Yielder': '1' } });
+  } catch {
+    throw new AppError("Couldn't reach Google. Check your connection.", 'google_failed');
+  }
+
+  if (res.status === 401) {
+    return null;
+  }
+
+  if (!res.ok) {
+    throw new AppError("Couldn't sign in with Google.", 'google_failed');
+  }
+
+  const body = (await res.json()) as { access: string; expiresIn: number; account: Account };
+
+  return { token: { access: body.access, expiresAt: Date.now() + body.expiresIn * 1000 }, account: body.account };
+}
+
+async function renewFromServer(): Promise<GoogleToken> {
+  const signedIn = await serverToken();
+
+  if (!signedIn) {
+    throw new ReauthError();
+  }
+
+  return signedIn.token;
+}
+
 /** Keeps a minute of margin, so a save doesn't start with a token about to expire. */
 const isFresh = (token: GoogleToken | null): token is GoogleToken => !!token && token.expiresAt - Date.now() > 60_000;
 
 export class DriveBackend implements StorageBackend {
   readonly kind = 'drive';
   readonly fileName = FILE_NAME;
+  readonly renewsSilently = SERVER_SIGN_IN;
   offlineCopy = false;
   private fileId: string | null = null;
   private version: string | null = null;
@@ -157,7 +197,7 @@ export class DriveBackend implements StorageBackend {
     private token: GoogleToken | null,
     public account: Account,
     private http: Http = (input, init) => fetch(input, init),
-    private renew: (hint?: string) => Promise<GoogleToken> = requestToken,
+    private renew: (hint?: string) => Promise<GoogleToken> = SERVER_SIGN_IN ? renewFromServer : requestToken,
     private copies: CopyStore = deviceCopies,
   ) {}
 
@@ -302,6 +342,10 @@ export class DriveBackend implements StorageBackend {
   signOut() {
     forget(TOKEN_KEY, ACCOUNT_KEY);
     void this.copies.remove(this.copyKey).catch(() => {});
+
+    if (SERVER_SIGN_IN) {
+      void fetch(`${AUTH_API}/signout`, { method: 'POST', headers: { 'X-Yielder': '1' }, keepalive: true }).catch(() => {});
+    }
   }
 }
 
@@ -316,8 +360,14 @@ async function accountOf(token: GoogleToken, http: Http = (input, init) => fetch
   }
 }
 
-/** Opens Google's sign-in (from a click). */
+/** Opens Google's sign-in (from a click). With the sign-in server, the page goes to Google and comes back. */
 export async function signInWithGoogle(): Promise<DriveBackend> {
+  if (SERVER_SIGN_IN) {
+    window.location.assign(`${AUTH_API}/start`);
+
+    return new Promise<never>(() => {});
+  }
+
   const token = await requestToken();
   const account = await accountOf(token);
 
@@ -331,8 +381,25 @@ export async function signInWithGoogle(): Promise<DriveBackend> {
  * otherwise this device's copy of the file. Null when there's neither.
  */
 export async function resumeGoogle(copies: CopyStore = deviceCopies): Promise<DriveBackend | null> {
-  const token = stored<GoogleToken>(TOKEN_KEY);
   const account = stored<Account>(ACCOUNT_KEY);
+
+  if (SERVER_SIGN_IN) {
+    try {
+      const signedIn = await serverToken();
+
+      if (!signedIn) {
+        return null;
+      }
+
+      store(ACCOUNT_KEY, signedIn.account);
+
+      return new DriveBackend(signedIn.token, signedIn.account, undefined, undefined, copies);
+    } catch {
+      // No connection: fall back to this device's copy below.
+    }
+  }
+
+  const token = stored<GoogleToken>(TOKEN_KEY);
 
   if (isFresh(token)) {
     const who = account ?? (await accountOf(token));

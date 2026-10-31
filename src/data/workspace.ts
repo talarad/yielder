@@ -8,7 +8,7 @@ import wasmUrl from 'sql.js/dist/sql-wasm-browser.wasm?url';
 
 import { AppError } from '../../shared/errors';
 import { browserBackend } from '../storage/browser';
-import { resumeGoogle } from '../storage/drive';
+import { resumeGoogle, SERVER_SIGN_IN } from '../storage/drive';
 import { ConflictError, ReauthError, type StorageBackend } from '../storage/types';
 import { Repo } from './repo';
 import { emptyDataFile, openDataFile, type Sqlite } from './sqlite';
@@ -93,9 +93,10 @@ class Workspace {
   }
 
   private async write(options: { force?: boolean }) {
-    // Shortly after a click the browser allows Google's window, so an expired sign-in renews by
-    // itself (the window closes on its own). Otherwise the save stops at "Reconnect".
-    if (this.backend.isConnected?.() === false && navigator.userActivation?.isActive) {
+    // An expired sign-in renews by itself: through the sign-in server, or shortly after a click,
+    // when the browser allows Google's window (it closes on its own). Otherwise the save stops at
+    // "Reconnect".
+    if (this.backend.isConnected?.() === false && (this.backend.renewsSilently || navigator.userActivation?.isActive)) {
       try {
         await this.backend.reconnect?.();
       } catch {
@@ -182,7 +183,8 @@ export async function resumeWorkspace(): Promise<Workspace | null> {
     return openWorkspace(browserBackend());
   }
 
-  if (mode === 'drive') {
+  // With the sign-in server, coming back from Google's sign-in page is also a resume.
+  if (mode === 'drive' || (mode === null && SERVER_SIGN_IN)) {
     const backend = await resumeGoogle();
 
     return backend ? openWorkspace(backend) : null;

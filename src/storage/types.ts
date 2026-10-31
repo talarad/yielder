@@ -13,6 +13,8 @@ export interface StorageBackend {
   reconnect?(): Promise<void>;
   /** False while the sign-in has expired: saving first needs reconnect(). */
   isConnected?(): boolean;
+  /** reconnect() needs no click (a sign-in server renews the token). */
+  renewsSilently?: boolean;
   /** True when load() returned the copy kept on this device, not yet checked against storage. */
   offlineCopy?: boolean;
   /** A link to open the file where it lives, if it has one. */

@@ -1,87 +1,89 @@
 # Setting up Yielder for free
 
-About 10 minutes. You need your GitHub account (you have one) and your Google account. No new
-accounts and no credit card.
+About 15 minutes, no credit card. You need a free Cloudflare account and your Google account.
 
 At the end you have:
 
-- the app at `https://<your-github-name>.github.io/yielder/`, on your phone and computer;
-- sign-in with Google, with your data in one file in your own Google Drive;
-- market data refreshed every month by GitHub, for free.
+- the app at `https://yielder.pages.dev` (or the name you pick), on your phone and computer;
+- sign-in with Google that lasts for months, with your data in one file in your own Google Drive;
+- market data refreshed every month by GitHub, for free;
+- a repository that can stay private.
 
-## 1. Put the site on GitHub Pages
+How it fits together: Cloudflare Pages serves the app and runs one small function,
+`functions/api/auth` (code in `server/auth.ts`), that keeps your Google sign-in alive. Your data
+never passes through it: the browser reads and writes your Drive file directly.
 
-The repository already has a **Deploy** workflow that builds the site and publishes it on every
-push to `main`. It only needs GitHub Pages turned on:
+## 1. Put the site on Cloudflare Pages
 
-1. On GitHub, open the repository → **Settings → Pages**.
-2. Under **Build and deployment → Source**, pick **GitHub Actions**.
-3. Open **Actions → Deploy → Run workflow**. When it finishes, the site is at
-   `https://<your-github-name>.github.io/yielder/`.
+1. Create a free account at <https://dash.cloudflare.com/sign-up>.
+2. **Workers & Pages → Create → Pages → Import an existing Git repository**. Connect GitHub and
+   allow Cloudflare to see only the `yielder` repository.
+3. Pick **yielder**, then:
+   - Project name: `yielder` (the address becomes `https://yielder.pages.dev`)
+   - Production branch: `main`
+   - Framework preset: `None`
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Environment variables: `NODE_VERSION` = `22`, and `VITE_GOOGLE_CLIENT_ID` = your Google
+     Client ID (step 2.5)
+4. **Save and Deploy.**
 
-On a free GitHub plan, Pages works only for **public** repositories (Settings → General → Danger
-Zone → Change visibility). That makes the code public, not your data: your data is never in the
-repository. With GitHub Pro the repository can stay private.
-
-The site already works now with **Use in this browser only**. "Continue with Google" says it's
-not set up yet; that's the next step.
-
-## 2. Turn on "Continue with Google"
+## 2. Google sign-in
 
 1. Go to <https://console.cloud.google.com/> and create a project, for example `Yielder`.
 2. **APIs & Services → Library**: search for **Google Drive API** and click **Enable**.
-3. **Google Auth Platform** (or "OAuth consent screen"):
-   - App name `Yielder`, your email as the support and contact email.
-   - Audience: **External**, and leave it in **Testing**. Under **Test users**, add your own
-     Gmail address. (Only test users can sign in. That's you.)
-   - Data access: add the scopes `.../auth/drive.file`, `openid`, `.../auth/userinfo.email`
-     and `.../auth/userinfo.profile`. They're all non-sensitive, so Google doesn't need to
-     review anything.
-4. **Clients → Create client → Web application**:
-   - Name: `Yielder web`
-   - Authorized JavaScript origins: `https://<your-github-name>.github.io` (the address without
-     `/yielder/`), and `http://localhost:5173` if you also run it locally.
-   - No redirect URIs are needed.
-5. Copy the **Client ID** (it ends with `.apps.googleusercontent.com`). It isn't a secret: it
-   only identifies the app to Google.
-6. Back on GitHub: the repository → **Settings → Secrets and variables → Actions → Variables →
-   New repository variable**: `VITE_GOOGLE_CLIENT_ID` = the Client ID. Then **Actions → Deploy →
-   Run workflow** so the site picks it up.
+3. **Google Auth Platform → Branding**: app name `Yielder`, your email as the support and
+   developer contact email, no logo (a logo needs Google's review), home page
+   `https://yielder.pages.dev/`, privacy policy `https://yielder.pages.dev/privacy.html`,
+   authorized domain `yielder.pages.dev`.
+4. **Data access**: add `.../auth/drive.file`, `openid`, `.../auth/userinfo.email` and
+   `.../auth/userinfo.profile`. They're all non-sensitive.
+5. **Clients → Create client → Web application**, name `Yielder web`:
+   - Authorized JavaScript origins: `https://yielder.pages.dev` (and `http://localhost:5173` to
+     run it locally)
+   - Authorized redirect URIs: `https://yielder.pages.dev/api/auth/callback`
+   - Copy the **Client ID**, and under **Client secrets**, the secret (Google shows it once; you
+     can always add a new one).
+6. **Audience → Publish app.** (In Testing, Google ends sign-ins after 7 days and only listed test
+   users can sign in.)
+7. Back in Cloudflare: the project → **Settings → Variables and secrets**, for Production:
+   - `VITE_AUTH` = `server` (text)
+   - `GOOGLE_CLIENT_SECRET` = the secret (type **Secret**)
 
-To use Google sign-in locally too, create a file `.env.local` next to `package.json` with
-`VITE_GOOGLE_CLIENT_ID=…` and restart `npm run dev`.
+   Then **Deployments → … → Retry deployment** so the build picks them up.
+
+To run it locally, create `.env.local` next to `package.json` with `VITE_GOOGLE_CLIENT_ID=…` and
+run `npm run dev`. Locally (without the sign-in function) Google sign-in uses Google's own window
+and lasts an hour, as on hosts without a server.
 
 ## 3. Move your data in
 
-1. Open your site and click **Continue with Google**. Google asks you to pick your account and
-   allow Yielder to "see, edit, create and delete only the specific Google Drive files you use
-   with this app". Allow it.
-2. The dashboard is empty. Click **Already have data? Open a Yielder file** and choose
-   `data\yielder-personal.db` from the project folder. That's a clean copy of everything from
-   the old version: all your funds and their months. The old `data\yielder.db` works too.
-3. The sidebar shows **Saved to Google Drive**, and a file named `Yielder data.db` appears in
-   your Drive. That file is your data from now on.
+1. Open your site and click **Continue with Google**, and allow access to "the specific Google
+   Drive files you use with this app". Keep that box ticked.
+2. If you used Yielder before with the same Google project, your data is already there. Otherwise
+   the dashboard is empty: click **Already have data? Open a Yielder file** and choose a Yielder
+   file (or the old server database `data\yielder.db`).
+3. The sidebar shows **Saved to Google Drive**, and `Yielder data.db` is in your Drive.
 
 ## 4. Monthly market data
 
 Nothing to do: the repository's GitHub Actions job **Market data** runs on the 20th–25th of
 every month, fetches the new month from data.gov.il and commits it when there's something new;
-the **Deploy** job then publishes the site with it. You can run it by hand from the repository's
+Cloudflare redeploys the site on that commit. You can run it by hand from the repository's
 **Actions** tab → **Market data → Run workflow**.
 
 ## Good to know
 
-- **Staying signed in**: Google sign-ins in the browser last an hour. Yielder keeps a copy of
-  your file on each device you use, so after that it still opens straight into your data
-  ("Copy on this device" in the sidebar). Saving reconnects by itself (a Google window opens and
-  closes on its own); if the browser blocks that window, a banner offers **Reconnect**. Signing
-  out removes the copy from that device, so sign out on shared computers.
+- **Staying signed in**: Google keeps the sign-in for as long as you use Yielder at least every
+  six months. Each device also keeps a copy of your file, so the app still opens without a
+  connection. Signing out ends the sign-in and removes the copy from that device.
 - **Two devices**: if the file changed on another device since you opened it, Yielder doesn't
   overwrite it; it asks whether to load the latest version or keep yours.
 - **Backups**: Google Drive keeps earlier versions of the file (right-click → **Manage
   versions**), and **Settings → Download a copy** saves the whole file to your computer.
 - **Leaving**: your data is a normal SQLite file. You can open it with any SQLite tool, or
   export everything to Excel from **Import → Export my data**.
-- **Other hosts**: any static host works. `public/_headers` and `public/_redirects` are the
-  security headers and page routing for Cloudflare Pages, if you ever prefer it (it can host a
-  private repository on its free plan).
+- **Without Cloudflare**: any static host works, e.g. GitHub Pages with the repository's
+  **Deploy** workflow (`.github/workflows/deploy.yml`; GitHub's free plan needs the repository
+  public for that). There, Google sign-in lasts an hour; Yielder opens this device's copy after
+  that and reconnects when you save.
