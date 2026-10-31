@@ -65,6 +65,9 @@ export function Login() {
           <ErrorText error={signIn.error} />
         </div>
       </div>
+      <a className="small auth-footer" href={`${import.meta.env.BASE_URL}privacy.html`}>
+        {t('auth.privacy')}
+      </a>
     </div>
   );
 }

@@ -58,7 +58,7 @@ To use Google sign-in locally too, create a file `.env.local` next to `package.j
    with this app". Allow it.
 2. The dashboard is empty. Click **Already have data? Open a Yielder file** and choose
    `data\yielder-personal.db` from the project folder. That's a clean copy of everything from
-   the old version: your 7 funds and all their months. The old `data\yielder.db` works too.
+   the old version: all your funds and their months. The old `data\yielder.db` works too.
 3. The sidebar shows **Saved to Google Drive**, and a file named `Yielder data.db` appears in
    your Drive. That file is your data from now on.
 

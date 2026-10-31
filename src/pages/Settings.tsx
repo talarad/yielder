@@ -113,6 +113,10 @@ export function Settings() {
           </div>
           {open.isSuccess && <div className="notice info">{t('settings.replaced')}</div>}
           <ErrorText error={open.error} />
+
+          <a className="small" href={`${import.meta.env.BASE_URL}privacy.html`}>
+            {t('auth.privacy')}
+          </a>
         </div>
       </Card>
 
