@@ -333,6 +333,10 @@
       {
         "month": "2026-09",
         "return": 0.0025
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0096
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה מקיפה (1328)"
@@ -671,6 +675,10 @@
       {
         "month": "2026-09",
         "return": 0.0056
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0131
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה מקיפה (1328)"
@@ -825,6 +833,10 @@
       {
         "month": "2026-09",
         "return": 0.0177
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0174
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה מקיפה (1328)"
@@ -1163,6 +1175,10 @@
       {
         "month": "2026-09",
         "return": -0.0042
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0091
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה כללית (1329)"
@@ -1469,6 +1485,10 @@
       {
         "month": "2026-09",
         "return": 0.0012
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0187
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה כללית (1329)"
@@ -1623,6 +1643,10 @@
       {
         "month": "2026-09",
         "return": 0.0205
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0249
       }
     ],
     "pensionFund": "אלטשולר שחם פנסיה כללית (1329)"
@@ -1961,6 +1985,10 @@
       {
         "month": "2026-09",
         "return": -0.0031
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0056
       }
     ],
     "note": "Main general track; a smaller sibling 'אלטשולר שחם השתלמות כללי ב'' (1290) also exists."
@@ -2299,6 +2327,10 @@
       {
         "month": "2026-09",
         "return": 0.0046
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0169
       }
     ]
   },
@@ -2444,6 +2476,10 @@
       {
         "month": "2026-09",
         "return": 0.0203
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0249
       }
     ]
   },
@@ -2781,6 +2817,10 @@
       {
         "month": "2026-09",
         "return": -0.0024
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0016
       }
     ]
   },
@@ -3118,6 +3158,10 @@
       {
         "month": "2026-09",
         "return": -0.0008
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0072
       }
     ]
   },
@@ -3275,6 +3319,10 @@
       {
         "month": "2026-09",
         "return": 0.0228
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0224
       }
     ]
   },
@@ -3612,6 +3660,10 @@
       {
         "month": "2026-09",
         "return": -0.0014
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0027
       }
     ]
   },
@@ -3949,6 +4001,10 @@
       {
         "month": "2026-09",
         "return": 0.0081
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0094
       }
     ]
   },
@@ -4154,6 +4210,10 @@
       {
         "month": "2026-09",
         "return": 0.022
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0238
       }
     ]
   },
@@ -4491,6 +4551,10 @@
       {
         "month": "2026-09",
         "return": -0.0013
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0088
       }
     ],
     "note": "Provident funds have no 'כללי' track; this is the default age-based track (extra, not in the original track list). Excludes the sector-only fund 9844 'לעמיתי חבר עד 50'."
@@ -4829,6 +4893,10 @@
       {
         "month": "2026-09",
         "return": 0.0052
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0175
       }
     ]
   },
@@ -4974,6 +5042,10 @@
       {
         "month": "2026-09",
         "return": 0.0203
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0247
       }
     ]
   },
@@ -5311,6 +5383,10 @@
       {
         "month": "2026-09",
         "return": -0.0021
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0024
       }
     ],
     "note": "Provident funds have no 'כללי' track; this is the default age-based track (extra, not in the original track list)."
@@ -5649,6 +5725,10 @@
       {
         "month": "2026-09",
         "return": -0.0004
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0078
       }
     ]
   },
@@ -5758,6 +5838,10 @@
       {
         "month": "2026-09",
         "return": 0.0222
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0233
       }
     ]
   },
@@ -6095,6 +6179,10 @@
       {
         "month": "2026-09",
         "return": 0.0001
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0043
       }
     ],
     "note": "Provident funds have no 'כללי' track; this is the default age-based track (extra, not in the original track list)."
@@ -6433,6 +6521,10 @@
       {
         "month": "2026-09",
         "return": 0.0082
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0099
       }
     ]
   },
@@ -6638,6 +6730,10 @@
       {
         "month": "2026-09",
         "return": 0.0219
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0236
       }
     ]
   },
@@ -6975,6 +7071,10 @@
       {
         "month": "2026-09",
         "return": -0.0033
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0067
       }
     ]
   },
@@ -7312,6 +7412,10 @@
       {
         "month": "2026-09",
         "return": 0.0004
+      },
+      {
+        "month": "2026-10",
+        "return": -0.018
       }
     ]
   },
@@ -7457,6 +7561,10 @@
       {
         "month": "2026-09",
         "return": 0.0203
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0248
       }
     ]
   },
@@ -7794,6 +7902,10 @@
       {
         "month": "2026-09",
         "return": -0.0018
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0009
       }
     ]
   },
@@ -8131,6 +8243,10 @@
       {
         "month": "2026-09",
         "return": -0.0008
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0071
       }
     ]
   },
@@ -8240,6 +8356,10 @@
       {
         "month": "2026-09",
         "return": 0.0222
+      },
+      {
+        "month": "2026-10",
+        "return": 0.023
       }
     ]
   },
@@ -8577,6 +8697,10 @@
       {
         "month": "2026-09",
         "return": 0.0013
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0032
       }
     ]
   },
@@ -8914,6 +9038,10 @@
       {
         "month": "2026-09",
         "return": 0.0077
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0098
       }
     ]
   },
@@ -9119,6 +9247,10 @@
       {
         "month": "2026-09",
         "return": 0.0221
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0236
       }
     ]
   },
@@ -9456,6 +9588,10 @@
       {
         "month": "2026-09",
         "return": 0.0064
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0145
       }
     ],
     "pensionFund": "כלל פנסיה (170)"
@@ -9794,6 +9930,10 @@
       {
         "month": "2026-09",
         "return": 0.0064
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0158
       }
     ],
     "pensionFund": "כלל פנסיה (170)"
@@ -10132,6 +10272,10 @@
       {
         "month": "2026-09",
         "return": 0.0081
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0227
       }
     ],
     "pensionFund": "כלל פנסיה (170)"
@@ -10406,6 +10550,10 @@
       {
         "month": "2026-09",
         "return": 0.019
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0066
       }
     ],
     "pensionFund": "כלל פנסיה (170)"
@@ -10744,6 +10892,10 @@
       {
         "month": "2026-09",
         "return": 0.0017
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0138
       }
     ],
     "pensionFund": "כלל פנסיה משלימה (667)"
@@ -11082,6 +11234,10 @@
       {
         "month": "2026-09",
         "return": 0.002
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0147
       }
     ],
     "pensionFund": "כלל פנסיה משלימה (667)"
@@ -11324,6 +11480,10 @@
       {
         "month": "2026-09",
         "return": 0.0054
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0325
       }
     ],
     "pensionFund": "כלל פנסיה משלימה (667)"
@@ -11474,6 +11634,10 @@
       {
         "month": "2026-09",
         "return": 0.022
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0094
       }
     ],
     "pensionFund": "כלל פנסיה משלימה (667)"
@@ -11812,6 +11976,10 @@
       {
         "month": "2026-09",
         "return": 0.0086
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0072
       }
     ],
     "pensionFund": "הראל  פנסיה (214)",
@@ -12151,6 +12319,10 @@
       {
         "month": "2026-09",
         "return": 0.0101
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0091
       }
     ],
     "pensionFund": "הראל  פנסיה (214)"
@@ -12489,6 +12661,10 @@
       {
         "month": "2026-09",
         "return": 0.0103
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0122
       }
     ],
     "pensionFund": "הראל  פנסיה (214)"
@@ -12770,6 +12946,10 @@
       },
       {
         "month": "2026-09",
+        "return": 0.018
+      },
+      {
+        "month": "2026-10",
         "return": 0.018
       }
     ],
@@ -13109,6 +13289,10 @@
       {
         "month": "2026-09",
         "return": 0.0011
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0054
       }
     ],
     "pensionFund": "הראל פנסיה כללית (662)"
@@ -13447,6 +13631,10 @@
       {
         "month": "2026-09",
         "return": 0.004
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0067
       }
     ],
     "pensionFund": "הראל פנסיה כללית (662)"
@@ -13749,6 +13937,10 @@
       {
         "month": "2026-09",
         "return": 0.0083
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0185
       }
     ],
     "pensionFund": "הראל פנסיה כללית (662)"
@@ -14031,6 +14223,10 @@
       {
         "month": "2026-09",
         "return": 0.0207
+      },
+      {
+        "month": "2026-10",
+        "return": 0.025
       }
     ],
     "pensionFund": "הראל פנסיה כללית (662)"
@@ -14261,6 +14457,10 @@
       {
         "month": "2026-09",
         "return": 0.0114
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0093
       }
     ],
     "pensionFund": "אינפיניטי פנסיה מקיפה (14036)"
@@ -14331,6 +14531,10 @@
       {
         "month": "2026-09",
         "return": 0.0119
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0121
       }
     ],
     "pensionFund": "אינפיניטי פנסיה מקיפה (14036)"
@@ -14557,6 +14761,10 @@
       {
         "month": "2026-09",
         "return": 0.0168
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0149
       }
     ],
     "pensionFund": "אינפיניטי פנסיה מקיפה (14036)"
@@ -14779,6 +14987,10 @@
       {
         "month": "2026-09",
         "return": 0.0015
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0086
       }
     ],
     "pensionFund": "אינפיניטי פנסיה כללית (14044)"
@@ -14837,6 +15049,10 @@
       {
         "month": "2026-09",
         "return": 0.0042
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0138
       }
     ],
     "pensionFund": "אינפיניטי פנסיה כללית (14044)"
@@ -15055,6 +15271,10 @@
       {
         "month": "2026-09",
         "return": 0.0198
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0217
       }
     ],
     "pensionFund": "אינפיניטי פנסיה כללית (14044)"
@@ -15393,6 +15613,10 @@
       {
         "month": "2026-09",
         "return": 0.0059
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0061
       }
     ],
     "pensionFund": "מיטב פנסיה מקיפה (163)"
@@ -15731,6 +15955,10 @@
       {
         "month": "2026-09",
         "return": 0.0078
+      },
+      {
+        "month": "2026-10",
+        "return": -0.007
       }
     ],
     "pensionFund": "מיטב פנסיה מקיפה (163)"
@@ -16025,6 +16253,10 @@
       {
         "month": "2026-09",
         "return": 0.0178
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0185
       }
     ],
     "pensionFund": "מיטב פנסיה מקיפה (163)"
@@ -16363,6 +16595,10 @@
       {
         "month": "2026-09",
         "return": 0.0009
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0044
       }
     ],
     "pensionFund": "מיטב פנסיה כללית (660)"
@@ -16701,6 +16937,10 @@
       {
         "month": "2026-09",
         "return": 0.0045
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0113
       }
     ],
     "pensionFund": "מיטב פנסיה כללית (660)"
@@ -16995,6 +17235,10 @@
       {
         "month": "2026-09",
         "return": 0.0209
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0263
       }
     ],
     "pensionFund": "מיטב פנסיה כללית (660)"
@@ -17333,6 +17577,10 @@
       {
         "month": "2026-09",
         "return": 0.0055
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0073
       }
     ],
     "pensionFund": "מנורה מבטחים פנסיה (168)"
@@ -17671,6 +17919,10 @@
       {
         "month": "2026-09",
         "return": 0.0061
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0079
       }
     ],
     "pensionFund": "מנורה מבטחים פנסיה (168)",
@@ -18010,6 +18262,10 @@
       {
         "month": "2026-09",
         "return": 0.0056
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0101
       }
     ],
     "pensionFund": "מנורה מבטחים פנסיה (168)"
@@ -18240,6 +18496,10 @@
       {
         "month": "2026-09",
         "return": 0.0187
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0178
       }
     ],
     "pensionFund": "מנורה מבטחים פנסיה (168)"
@@ -18578,6 +18838,10 @@
       {
         "month": "2026-09",
         "return": 0.0011
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0079
       }
     ],
     "pensionFund": "מנורה מבטחים משלימה (665)",
@@ -18745,6 +19009,10 @@
       {
         "month": "2026-09",
         "return": 0.0018
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0138
       }
     ],
     "pensionFund": "מנורה מבטחים משלימה (665)"
@@ -18975,6 +19243,10 @@
       {
         "month": "2026-09",
         "return": 0.0209
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0241
       }
     ],
     "pensionFund": "מנורה מבטחים משלימה (665)"
@@ -19313,6 +19585,10 @@
       {
         "month": "2026-09",
         "return": 0.0056
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0144
       }
     ],
     "pensionFund": "מגדל מקפת אישית (162)"
@@ -19651,6 +19927,10 @@
       {
         "month": "2026-09",
         "return": 0.0048
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0176
       }
     ],
     "pensionFund": "מגדל מקפת אישית (162)"
@@ -19989,6 +20269,10 @@
       {
         "month": "2026-09",
         "return": 0.0068
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0231
       }
     ],
     "pensionFund": "מגדל מקפת אישית (162)"
@@ -20263,6 +20547,10 @@
       {
         "month": "2026-09",
         "return": 0.0188
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0039
       }
     ],
     "pensionFund": "מגדל מקפת אישית (162)"
@@ -20601,6 +20889,10 @@
       {
         "month": "2026-09",
         "return": 0.0022
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0142
       }
     ],
     "pensionFund": "מגדל מקפת משלימה (659)"
@@ -20939,6 +21231,10 @@
       {
         "month": "2026-09",
         "return": 0.0012
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0178
       }
     ],
     "pensionFund": "מגדל מקפת משלימה (659)"
@@ -21277,6 +21573,10 @@
       {
         "month": "2026-09",
         "return": 0.0046
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0321
       }
     ],
     "pensionFund": "מגדל מקפת משלימה (659)"
@@ -21547,6 +21847,10 @@
       {
         "month": "2026-09",
         "return": 0.0217
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0056
       }
     ],
     "pensionFund": "מגדל מקפת משלימה (659)"
@@ -21773,6 +22077,10 @@
       {
         "month": "2026-09",
         "return": 0.0073
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0132
       }
     ],
     "pensionFund": "מור פנסיה מקיפה (13908)"
@@ -21999,6 +22307,10 @@
       {
         "month": "2026-09",
         "return": 0.0095
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0171
       }
     ],
     "pensionFund": "מור פנסיה מקיפה (13908)"
@@ -22121,6 +22433,10 @@
       {
         "month": "2026-09",
         "return": 0.0197
+      },
+      {
+        "month": "2026-10",
+        "return": 0.012
       }
     ],
     "pensionFund": "מור פנסיה מקיפה (13908)"
@@ -22347,6 +22663,10 @@
       {
         "month": "2026-09",
         "return": 0.0049
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0145
       }
     ],
     "pensionFund": "מור פנסיה כללית (13918)"
@@ -22569,6 +22889,10 @@
       {
         "month": "2026-09",
         "return": 0.007
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0263
       }
     ],
     "pensionFund": "מור פנסיה כללית (13918)"
@@ -22691,6 +23015,10 @@
       {
         "month": "2026-09",
         "return": 0.0221
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0156
       }
     ],
     "pensionFund": "מור פנסיה כללית (13918)"
@@ -23029,6 +23357,10 @@
       {
         "month": "2026-09",
         "return": 0.0078
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0171
       }
     ],
     "pensionFund": "הפניקס פנסיה מקיפה (209)"
@@ -23367,6 +23699,10 @@
       {
         "month": "2026-09",
         "return": 0.005
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0246
       }
     ],
     "pensionFund": "הפניקס פנסיה מקיפה (209)"
@@ -23657,6 +23993,10 @@
       {
         "month": "2026-09",
         "return": 0.0186
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0064
       }
     ],
     "pensionFund": "הפניקס פנסיה מקיפה (209)"
@@ -23995,6 +24335,10 @@
       {
         "month": "2026-09",
         "return": 0.0012
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0161
       }
     ],
     "pensionFund": "הפניקס פנסיה משלימה (671)"
@@ -24333,6 +24677,10 @@
       {
         "month": "2026-09",
         "return": 0.0032
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0324
       }
     ],
     "pensionFund": "הפניקס פנסיה משלימה (671)"
@@ -24599,6 +24947,10 @@
       {
         "month": "2026-09",
         "return": 0.0214
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0088
       }
     ],
     "pensionFund": "הפניקס פנסיה משלימה (671)"
@@ -24937,6 +25289,10 @@
       {
         "month": "2026-09",
         "return": 0.0017
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0024
       }
     ]
   },
@@ -25274,6 +25630,10 @@
       {
         "month": "2026-09",
         "return": 0.005
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0131
       }
     ]
   },
@@ -25563,6 +25923,10 @@
       {
         "month": "2026-09",
         "return": 0.022
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0242
       }
     ]
   },
@@ -25900,6 +26264,10 @@
       {
         "month": "2026-09",
         "return": 0.0007
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0038
       }
     ]
   },
@@ -26237,6 +26605,10 @@
       {
         "month": "2026-09",
         "return": 0.0085
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0183
       }
     ]
   },
@@ -26510,6 +26882,10 @@
       {
         "month": "2026-09",
         "return": 0.0207
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0251
       }
     ]
   },
@@ -26811,6 +27187,10 @@
       {
         "month": "2026-09",
         "return": 0.0012
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0001
       }
     ]
   },
@@ -27148,6 +27528,10 @@
       {
         "month": "2026-09",
         "return": 0.0085
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0044
       }
     ]
   },
@@ -27277,6 +27661,10 @@
       {
         "month": "2026-09",
         "return": 0.0199
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0242
       }
     ]
   },
@@ -27614,6 +28002,10 @@
       {
         "month": "2026-09",
         "return": 0.0004
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0019
       }
     ],
     "note": "Main general track; excludes self-managed 'מיטב השתלמות בניהול אישי' (1487) and the Bank of Israel employees fund (289)."
@@ -27952,6 +28344,10 @@
       {
         "month": "2026-09",
         "return": 0.0045
+      },
+      {
+        "month": "2026-10",
+        "return": -0.011
       }
     ]
   },
@@ -28261,6 +28657,10 @@
       {
         "month": "2026-09",
         "return": 0.0211
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0263
       }
     ]
   },
@@ -28598,6 +28998,10 @@
       {
         "month": "2026-09",
         "return": 0.0011
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0048
       }
     ],
     "note": "Excludes the engineers-only 'אומגה' funds managed by a separate Menora-affiliated company (520027715)."
@@ -28936,6 +29340,10 @@
       {
         "month": "2026-09",
         "return": 0.0022
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0143
       }
     ]
   },
@@ -29161,6 +29569,10 @@
       {
         "month": "2026-09",
         "return": 0.0214
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0242
       }
     ]
   },
@@ -29498,6 +29910,10 @@
       {
         "month": "2026-09",
         "return": 0.0017
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0035
       }
     ]
   },
@@ -29835,6 +30251,10 @@
       {
         "month": "2026-09",
         "return": 0.0046
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0125
       }
     ]
   },
@@ -30000,6 +30420,10 @@
       {
         "month": "2026-09",
         "return": 0.0217
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0208
       }
     ]
   },
@@ -30337,6 +30761,10 @@
       {
         "month": "2026-09",
         "return": -0.0009
+      },
+      {
+        "month": "2026-10",
+        "return": 0.004
       }
     ]
   },
@@ -30674,6 +31102,10 @@
       {
         "month": "2026-09",
         "return": 0.0043
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0045
       }
     ]
   },
@@ -31011,6 +31443,10 @@
       {
         "month": "2026-09",
         "return": 0.0243
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0221
       }
     ]
   },
@@ -31348,6 +31784,10 @@
       {
         "month": "2026-09",
         "return": 0.0006
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0036
       }
     ]
   },
@@ -31685,6 +32125,10 @@
       {
         "month": "2026-09",
         "return": 0.0029
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0134
       }
     ]
   },
@@ -31982,6 +32426,10 @@
       {
         "month": "2026-09",
         "return": 0.0214
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0247
       }
     ]
   },
@@ -32319,6 +32767,10 @@
       {
         "month": "2026-09",
         "return": 0.0015
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0043
       }
     ],
     "note": "Separate legacy provident fund with a general track (not the company's flagship provident fund); see also the Age 50 and under series."
@@ -32657,6 +33109,10 @@
       {
         "month": "2026-09",
         "return": 0.0028
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0032
       }
     ],
     "note": "Added for comparability: the company's 'General' provident series is a separate legacy fund, so its main provident fund's default age-based track is included as well (substitute, not in the original track list)."
@@ -32995,6 +33451,10 @@
       {
         "month": "2026-09",
         "return": 0.005
+      },
+      {
+        "month": "2026-10",
+        "return": -0.013
       }
     ]
   },
@@ -33284,6 +33744,10 @@
       {
         "month": "2026-09",
         "return": 0.022
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0243
       }
     ]
   },
@@ -33621,6 +34085,10 @@
       {
         "month": "2026-09",
         "return": 0.0022
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0068
       }
     ],
     "note": "Provident funds of this company have no 'כללי' track open to the public in its main provident fund; this is the default age-based track (substitute, not in the original track list)."
@@ -33959,6 +34427,10 @@
       {
         "month": "2026-09",
         "return": 0.0086
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0183
       }
     ]
   },
@@ -34228,6 +34700,10 @@
       {
         "month": "2026-09",
         "return": 0.0207
+      },
+      {
+        "month": "2026-10",
+        "return": 0.025
       }
     ]
   },
@@ -34565,6 +35041,10 @@
       {
         "month": "2026-09",
         "return": 0.0038
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0058
       }
     ],
     "note": "Provident funds of this company have no 'כללי' track open to the public in its main provident fund; this is the default age-based track (substitute, not in the original track list)."
@@ -34903,6 +35383,10 @@
       {
         "month": "2026-09",
         "return": 0.0079
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0029
       }
     ]
   },
@@ -35036,6 +35520,10 @@
       {
         "month": "2026-09",
         "return": 0.0203
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0241
       }
     ]
   },
@@ -35373,6 +35861,10 @@
       {
         "month": "2026-09",
         "return": -0.0008
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0029
       }
     ],
     "note": "Separate legacy provident fund with a general track (not the company's flagship provident fund); see also the Age 50 and under series. Very small fund (about 22M ILS)."
@@ -35711,6 +36203,10 @@
       {
         "month": "2026-09",
         "return": 0.0009
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0045
       }
     ],
     "note": "Added for comparability: the company's 'General' provident series is a separate legacy fund, so its main provident fund's default age-based track is included as well (substitute, not in the original track list)."
@@ -36049,6 +36545,10 @@
       {
         "month": "2026-09",
         "return": 0.0049
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0119
       }
     ]
   },
@@ -36358,6 +36858,10 @@
       {
         "month": "2026-09",
         "return": 0.021
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0263
       }
     ]
   },
@@ -36695,6 +37199,10 @@
       {
         "month": "2026-09",
         "return": 0.0013
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0015
       }
     ],
     "note": "Separate legacy provident fund with a general track (not the company's flagship provident fund); see also the Age 50 and under series. Larger of two such tracks; the other is 'מנורה מבטחים אמיר כללי' (260)."
@@ -37033,6 +37541,10 @@
       {
         "month": "2026-09",
         "return": 0.0012
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0083
       }
     ],
     "note": "Added for comparability: the company's 'General' provident series is a separate legacy fund, so its main provident fund's default age-based track is included as well (substitute, not in the original track list)."
@@ -37371,6 +37883,10 @@
       {
         "month": "2026-09",
         "return": 0.0025
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0141
       }
     ]
   },
@@ -37596,6 +38112,10 @@
       {
         "month": "2026-09",
         "return": 0.0215
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0242
       }
     ]
   },
@@ -37933,6 +38453,10 @@
       {
         "month": "2026-09",
         "return": 0.002
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0067
       }
     ],
     "note": "Provident funds of this company have no 'כללי' track open to the public in its main provident fund; this is the default age-based track (substitute, not in the original track list). Migdal's former general track (744) closed in 2020-10."
@@ -38271,6 +38795,10 @@
       {
         "month": "2026-09",
         "return": 0.0048
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0128
       }
     ]
   },
@@ -38544,6 +39072,10 @@
       {
         "month": "2026-09",
         "return": 0.0217
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0207
       }
     ]
   },
@@ -38881,6 +39413,10 @@
       {
         "month": "2026-09",
         "return": -0.001
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0014
       }
     ],
     "note": "Provident funds of this company have no 'כללי' track open to the public in its main provident fund; this is the default age-based track (substitute, not in the original track list)."
@@ -39219,6 +39755,10 @@
       {
         "month": "2026-09",
         "return": 0.0043
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0069
       }
     ]
   },
@@ -39556,6 +40096,10 @@
       {
         "month": "2026-09",
         "return": 0.0239
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0226
       }
     ]
   },
@@ -39893,6 +40437,10 @@
       {
         "month": "2026-09",
         "return": 0.0024
+      },
+      {
+        "month": "2026-10",
+        "return": -0.006
       }
     ],
     "note": "Provident funds of this company have no 'כללי' track open to the public in its main provident fund; this is the default age-based track (substitute, not in the original track list)."
@@ -40231,6 +40779,10 @@
       {
         "month": "2026-09",
         "return": 0.0031
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0145
       }
     ]
   },
@@ -40528,6 +41080,10 @@
       {
         "month": "2026-09",
         "return": 0.0215
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0247
       }
     ]
   },
@@ -40865,6 +41421,10 @@
       {
         "month": "2026-09",
         "return": 0.001
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0027
       }
     ]
   },
@@ -41202,6 +41762,10 @@
       {
         "month": "2026-09",
         "return": 0.0053
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0132
       }
     ]
   },
@@ -41491,6 +42055,10 @@
       {
         "month": "2026-09",
         "return": 0.0221
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0239
       }
     ]
   },
@@ -41828,6 +42396,10 @@
       {
         "month": "2026-09",
         "return": -0.0029
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0001
       }
     ]
   },
@@ -42165,6 +42737,10 @@
       {
         "month": "2026-09",
         "return": 0.0005
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0044
       }
     ]
   },
@@ -42438,6 +43014,10 @@
       {
         "month": "2026-09",
         "return": 0.0207
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0251
       }
     ]
   },
@@ -42775,6 +43355,10 @@
       {
         "month": "2026-09",
         "return": 0.0032
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0028
       }
     ]
   },
@@ -43112,6 +43696,10 @@
       {
         "month": "2026-09",
         "return": 0.0067
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0052
       }
     ]
   },
@@ -43245,6 +43833,10 @@
       {
         "month": "2026-09",
         "return": 0.0202
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0244
       }
     ]
   },
@@ -43582,6 +44174,10 @@
       {
         "month": "2026-09",
         "return": 0
+      },
+      {
+        "month": "2026-10",
+        "return": -0.002
       }
     ]
   },
@@ -43919,6 +44515,10 @@
       {
         "month": "2026-09",
         "return": 0.0043
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0107
       }
     ]
   },
@@ -44220,6 +44820,10 @@
       {
         "month": "2026-09",
         "return": 0.0211
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0263
       }
     ]
   },
@@ -44557,6 +45161,10 @@
       {
         "month": "2026-09",
         "return": 0.0013
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0046
       }
     ]
   },
@@ -44606,6 +45214,10 @@
       {
         "month": "2026-09",
         "return": 0.002
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0178
       }
     ],
     "note": "New actively managed equities track (opened 2025-12). Older equity-like alternatives: 'מניות סחיר' (13353) and 'עוקב מדדי מניות' (8683)."
@@ -44832,6 +45444,10 @@
       {
         "month": "2026-09",
         "return": 0.0214
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0243
       }
     ]
   },
@@ -45169,6 +45785,10 @@
       {
         "month": "2026-09",
         "return": 0.0003
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0025
       }
     ]
   },
@@ -45506,6 +46126,10 @@
       {
         "month": "2026-09",
         "return": 0.0047
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0118
       }
     ]
   },
@@ -45779,6 +46403,10 @@
       {
         "month": "2026-09",
         "return": 0.0217
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0208
       }
     ]
   },
@@ -46116,6 +46744,10 @@
       {
         "month": "2026-09",
         "return": -0.0019
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0015
       }
     ]
   },
@@ -46453,6 +47085,10 @@
       {
         "month": "2026-09",
         "return": 0.0037
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0069
       }
     ]
   },
@@ -46790,6 +47426,10 @@
       {
         "month": "2026-09",
         "return": 0.024
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0219
       }
     ]
   },
@@ -47127,6 +47767,10 @@
       {
         "month": "2026-09",
         "return": 0.0009
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0038
       }
     ]
   },
@@ -47380,6 +48024,10 @@
       {
         "month": "2026-09",
         "return": 0.0029
+      },
+      {
+        "month": "2026-10",
+        "return": -0.0146
       }
     ],
     "note": "Fund was managed by Helman-Aldubi (הלמן-אלדובי, 512227265) until 2021-09; only months managed by Phoenix (from 2021-10) are included."
@@ -47686,6 +48334,10 @@
       {
         "month": "2026-09",
         "return": 0.0214
+      },
+      {
+        "month": "2026-10",
+        "return": 0.0246
       }
     ]
   }
